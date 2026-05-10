@@ -48,10 +48,11 @@ export default function LinguaCampus() {
                 Solicitar demo
               </Link>
               <Link
-                href="#contacto"
+                href="https://lingua-campus.vercel.app/"
+                target="_blank"
                 className="border-2 border-sea text-sea-dark hover:bg-sea-light px-6 py-[12px] rounded-sm text-sm font-medium transition-colors"
               >
-                Más información
+                Ver proyecto
               </Link>
             </div>
           </div>

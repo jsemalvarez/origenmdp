@@ -18,15 +18,19 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="bg-ocean-deeper py-20 px-[6%]">
-      <div className="max-w-[980px] mx-auto">
+    <section id="contacto" className="bg-ocean-deeper py-20 px-[6%] relative overflow-hidden">
+      <div className="hero-grid opacity-50" />
+      <div className="absolute -top-[100px] -right-[100px] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(11,110,140,0.15)_0%,transparent_65%)] pointer-events-none" />
+      <div className="absolute -bottom-[100px] -left-[100px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(39,174,138,0.08)_0%,transparent_65%)] pointer-events-none" />
+      
+      <div className="max-w-[980px] mx-auto relative z-10">
         <p className="flex items-center gap-[10px] text-[11px] tracking-[0.16em] uppercase text-sea/70 font-medium mb-4">
           <span className="w-5 h-[1px] bg-sea" />
           Contacto
         </p>
 
-        <h2 className="font-serif text-[clamp(28px,4vw,46px)] font-bold leading-[1.1] text-white tracking-tight mb-12">
-          ¿Tenés un proyecto <em>en mente?</em>
+        <h2 className="font-serif text-[clamp(28px,4vw,46px)] font-bold leading-[1.1] tracking-tight mb-12" style={{ color: "white" }}>
+          ¿Tenés un proyecto <em style={{ color: "var(--sand)", fontStyle: "italic", fontWeight: 300 }}>en mente?</em>
         </h2>
 
         <div className="grid md:grid-cols-2 gap-16 items-start">

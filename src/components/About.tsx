@@ -12,7 +12,7 @@ export default function About() {
         <div className="grid md:grid-cols-[auto_1fr] gap-14 items-center">
           <div className="relative w-[180px] h-[180px] rounded-full overflow-hidden border-[3px] border-ocean-light flex-shrink-0 mx-auto md:mx-0">
             <Image
-              src="/founder.png"
+              src="/founder_v2.png"
               alt="Fundador de Origen MdP"
               fill
               className="object-cover"

@@ -46,8 +46,8 @@ export default function Services() {
           Qué podemos hacer por vos
         </p>
         
-        <h2 className="font-serif text-[clamp(28px,4vw,46px)] font-bold leading-[1.1] text-white tracking-tight mb-4">
-          Soluciones <em>a tu medida</em>
+        <h2 className="font-serif text-[clamp(28px,4vw,46px)] font-bold leading-[1.1] tracking-tight mb-4" style={{ color: "white" }}>
+          Soluciones <em style={{ color: "var(--sand)", fontStyle: "italic", fontWeight: 300 }}>a tu medida</em>
         </h2>
         
         <p className="text-lg text-white/40 font-light max-w-[540px] leading-relaxed mb-14">

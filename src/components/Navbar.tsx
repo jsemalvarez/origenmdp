@@ -40,12 +40,17 @@ export default function Navbar() {
         </li>
       </ul>
 
-      <Link
-        href="#contacto"
-        className="hidden md:block bg-sand hover:bg-sand-dark text-ink hover:text-white text-[13px] font-medium px-5 py-[9px] rounded-sm transition-all"
-      >
-        Hablemos
-      </Link>
+      <div className="hidden md:flex items-center gap-6">
+        <Link href="/login" className="text-[13px] text-white/50 hover:text-white transition-colors">
+          Login
+        </Link>
+        <Link
+          href="#contacto"
+          className="bg-sand hover:bg-sand-dark text-ink hover:text-white text-[13px] font-medium px-5 py-[9px] rounded-sm transition-all"
+        >
+          Hablemos
+        </Link>
+      </div>
 
       <button
         className="md:hidden text-white/70 text-2xl"

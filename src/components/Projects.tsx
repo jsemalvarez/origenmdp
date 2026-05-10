@@ -12,7 +12,7 @@ const projects = [
       { label: "Bot WhatsApp", bg: "var(--ocean-light)", color: "var(--ocean-mid)" },
       { label: "2 años activo", bg: "var(--ocean-light)", color: "var(--ocean-mid)" }
     ],
-    link: "#"
+    link: "https://www.paseosconpeques.com.ar/"
   },
   {
     title: "Chuli Tienda",
@@ -25,7 +25,7 @@ const projects = [
       { label: "Diseño propio", bg: "var(--sand-light)", color: "var(--sand-dark)" },
       { label: "100% a medida", bg: "var(--sand-light)", color: "var(--sand-dark)" }
     ],
-    link: "#"
+    link: "https://chuli-tienda.vercel.app/"
   }
 ];
 
@@ -70,7 +70,7 @@ export default function Projects() {
                 ))}
               </div>
               
-              <Link href={project.link} className="text-[13px] font-medium text-ocean inline-flex items-center gap-1 hover:gap-2 transition-all">
+              <Link href={project.link} target="_blank" className="text-[13px] font-medium text-ocean inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Ver proyecto <span>→</span>
               </Link>
             </div>
