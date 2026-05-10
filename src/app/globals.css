@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-fraunces);
+  
+  --color-ocean: var(--ocean);
+  --color-ocean-mid: var(--ocean-mid);
+  --color-ocean-dark: var(--ocean-dark);
+  --color-ocean-deeper: var(--ocean-deeper);
+  --color-ocean-light: var(--ocean-light);
+  --color-sand: var(--sand);
+  --color-sand-dark: var(--sand-dark);
+  --color-sand-light: var(--sand-light);
+  --color-sea: var(--sea);
+  --color-sea-dark: var(--sea-dark);
+  --color-sea-light: var(--sea-light);
+  --color-off-white: var(--off-white);
+  --color-ink: var(--ink);
+  --color-ink-mid: var(--ink-mid);
+  --color-ink-light: var(--ink-light);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ocean: #0b6e8c;
+  --ocean-mid: #084f66;
+  --ocean-dark: #041e28;
+  --ocean-deeper: #021318;
+  --ocean-light: #e0f2f8;
+  --sand: #f2c94c;
+  --sand-dark: #c9a020;
+  --sand-light: #fef8e1;
+  --sea: #27ae8a;
+  --sea-dark: #1b8068;
+  --sea-light: #e2f7f2;
+  --off-white: #f7f5f0;
+  --ink: #0d1f27;
+  --ink-mid: #3d5560;
+  --ink-light: #7a97a3;
+  --white: #ffffff;
+  --r: 12px;
+  --r-sm: 8px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-dm-sans), sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(11, 110, 140, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(11, 110, 140, 0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 75% 40%, black 0%, transparent 70%);
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s ease both;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
