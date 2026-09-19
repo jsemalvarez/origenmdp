@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-16T00:00:00.000Z",
+  "title": "Design System: Origen MdP — Costa Tech",
+  "extensions": {
+    "colorMeta": {
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta (Violet-Cast Ink)",
+        "canonical": "#15131E",
+        "tonalRamp": ["#0A0810", "#0E0C16", "#15131E", "#1D1A2A", "#241F35", "#332C49", "#4A4166", "#6B5F91"]
+      },
+      "tinta-honda": {
+        "role": "neutral",
+        "displayName": "Tinta Honda (Recessed Well)",
+        "canonical": "#0E0C16",
+        "tonalRamp": ["#060509", "#0A0810", "#0E0C16", "#141120", "#1C1830", "#2A2447", "#3E3566", "#5B4E93"]
+      },
+      "tinta-alta": {
+        "role": "neutral",
+        "displayName": "Tinta Alta (Raised Panel)",
+        "canonical": "#1D1A2A",
+        "tonalRamp": ["#0B0A10", "#12111A", "#1D1A2A", "#26223A", "#332D4E", "#463E69", "#5E548C", "#8479B4"]
+      },
+      "tinta-capa": {
+        "role": "neutral",
+        "displayName": "Tinta Capa (Top Surface)",
+        "canonical": "#241F35",
+        "tonalRamp": ["#0D0B14", "#16131F", "#241F35", "#2F2945", "#3D3559", "#524878", "#6C5F9B", "#9084BE"]
+      },
+      "hueso": {
+        "role": "neutral",
+        "displayName": "Hueso (Allocated Bone)",
+        "canonical": "#E8DCC8",
+        "tonalRamp": ["#2E2720", "#4A4033", "#6B5D4A", "#8D7C64", "#AD9C82", "#C9BAA3", "#E8DCC8", "#F6F0E4"]
+      },
+      "hueso-tenue": {
+        "role": "neutral",
+        "displayName": "Hueso Tenue (Secondary Voice)",
+        "canonical": "#A89F93",
+        "tonalRamp": ["#22201D", "#3A3733", "#55504A", "#726C64", "#8F887F", "#A89F93", "#C5BEB5", "#E3DED8"]
+      },
+      "naranja": {
+        "role": "primary",
+        "displayName": "Naranja Quemado (Live Accent)",
+        "canonical": "#D4653A",
+        "tonalRamp": ["#2C1409", "#4A2312", "#6C341B", "#8F4525", "#B15530", "#D4653A", "#E8834F", "#F2AC85"]
+      },
+      "naranja-claro": {
+        "role": "primary",
+        "displayName": "Naranja Claro (Lift State)",
+        "canonical": "#E8834F",
+        "tonalRamp": ["#33190C", "#532A16", "#764020", "#98552B", "#BC6A36", "#E8834F", "#F0A176", "#F8C9AE"]
+      },
+      "violeta": {
+        "role": "secondary",
+        "displayName": "Violeta Apagado (Unallocated Matter)",
+        "canonical": "#5F5870",
+        "tonalRamp": ["#141220", "#221F2E", "#322E40", "#443F54", "#5F5870", "#7C748F", "#9C95AC", "#C2BCCD"]
+      },
+      "byte": {
+        "role": "tertiary",
+        "displayName": "Byte en Reposo",
+        "canonical": "#56506E",
+        "tonalRamp": ["#121020", "#1E1B2E", "#2C283F", "#3E3852", "#56506E", "#736CA0", "#9A94C0", "#C6C1DD"]
+      },
+      "byte-vivo": {
+        "role": "tertiary",
+        "displayName": "Byte Vivo (Just Mutated)",
+        "canonical": "#A396C9",
+        "tonalRamp": ["#1D1830", "#2F2750", "#443A70", "#5B4E90", "#7568AE", "#A396C9", "#C4BADD", "#E2DCEF"]
+      },
+      "filete": {
+        "role": "neutral",
+        "displayName": "Filete (Hairline Rule)",
+        "canonical": "#2E2940",
+        "tonalRamp": ["#0C0B11", "#16141E", "#2E2940", "#3D3755", "#514A70", "#6A6190", "#8C84B0", "#B8B2D0"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The hero headline only — Archivo at 119% width, one per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles and region promises: what the business gains, stated first." },
+      "title": { "displayName": "Title", "purpose": "Unit names inside cards." },
+      "body": { "displayName": "Body", "purpose": "Bajadas, detail paragraphs, section text. Held to 42–58ch." },
+      "region-name": { "displayName": "Region Name", "purpose": "The plain-Spanish name of a region wherever it is offered: index rows, selector rows, region subtitles." },
+      "label": { "displayName": "Label / Rótulo", "purpose": "Narrow tracked uppercase micro-labels: nav links, field legends, ghost buttons." },
+      "lockup": { "displayName": "Lockup", "purpose": "\"Origen MdP — Costa Tech\", never split; condenses to 86% width below 560px." },
+      "address": { "displayName": "Address", "purpose": "Chivo Mono for every hex address, form input, error string and footer line." },
+      "byte": { "displayName": "Byte", "purpose": "Chivo Mono for the live byte field's two-digit hex cells. Decorative and aria-hidden." }
+    },
+    "shadows": [
+      { "name": "edge-hairline", "value": "0 1px 0 rgba(95, 88, 112, 0.5)", "purpose": "Bottom edge of an isometric plane, so an unallocated region reads as a real stratum rather than a plane being erased." },
+      { "name": "edge-hairline-activa", "value": "0 1px 0 rgba(212, 101, 58, 0.6)", "purpose": "The same edge on the active layer." },
+      { "name": "active-layer-bloom", "value": "0 22px 44px -26px rgba(212, 101, 58, 0.5)", "purpose": "The lifted active layer's cast onto the stack below it. Active state only." },
+      { "name": "action-bloom", "value": "0 10px 26px -12px rgba(212, 101, 58, 0.9)", "purpose": "Under the primary action at rest, so the one orange rectangle on the page sits off the ground." },
+      { "name": "action-bloom-hover", "value": "0 18px 34px -14px rgba(212, 101, 58, 0.95)", "purpose": "Primary action hover, paired with a 2px lift." },
+      { "name": "state-dot-halo", "value": "0 0 0 4px rgba(212, 101, 58, 0.18)", "purpose": "Ring around an active index dot, selector dot or confirmation dot." }
+    ],
+    "motion": [
+      { "name": "salida", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The single easing curve for the entire page. Exponential ease-out; every transition and keyframe uses it." },
+      { "name": "revela", "value": "opacity 620ms var(--salida), transform 620ms var(--salida)", "purpose": "Soft sequential reveal from translateY(14px). Hidden state exists only under the .js class an inline head script sets before paint." },
+      { "name": "revela-stagger", "value": "120ms / 220ms / 320ms / 420ms within a region; 140ms per card", "purpose": "Staggered arrival inside a section, never a global timeline." },
+      { "name": "capa-lift", "value": "transform 720ms var(--salida)", "purpose": "Isometric layer fan and the active layer's lift to translateZ(236px)." },
+      { "name": "cross-fade-allocacion", "value": "opacity 700ms var(--salida), filter 700ms var(--salida), transform 700ms var(--salida)", "purpose": "Noise blurs out at 3px while the allocated structure resolves in the same box." },
+      { "name": "byte-churn", "value": "rAF loop, ~100ms cadence, 6 cells per tick, 3-tick live decay, color 420ms var(--salida)", "purpose": "Idle-from-load byte mutation by direct DOM writes. IntersectionObserver-paused offscreen; never started under prefers-reduced-motion." },
+      { "name": "llamada-entrada", "value": "620ms var(--salida), delay 140ms + 110ms per index", "purpose": "Leader-line callouts slide 10px inward as their layer lifts." },
+      { "name": "estado", "value": "240–320ms var(--salida)", "purpose": "Hover and active state changes on buttons, nav links, cards, dots and fields." },
+      { "name": "reduced-motion", "value": "transition-duration: 0.01ms; .revela opacity 1 / transform none; .bloqueRegion opacity 1; .contenidoCapa opacity 1", "purpose": "Every dimmed or hidden state has an explicit reset in the same stylesheet that dimmed it." }
+    ],
+    "breakpoints": [
+      { "name": "wide", "value": "1100px" },
+      { "name": "narrow", "value": "900px" },
+      { "name": "form", "value": "680px" },
+      { "name": "phone", "value": "560px" }
+    ],
+    "layout": [
+      { "name": "measure", "value": "1500px", "purpose": "Maximum content width, centred." },
+      { "name": "cabecera", "value": "56px", "purpose": "Sticky header height; anchors carry scroll-margin-top of cabecera + 16px." },
+      { "name": "pila", "value": "296px square, rotateX(56deg) rotateZ(-40deg), 26px in-plane / 62px Z per index", "purpose": "The isometric region stack; 250px with 24px/52px steps below 1100px." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one orange rectangle in a section: quote request and form submit.",
+      "html": "<a class=\"ds-accion-primaria\" href=\"#cotizar\">Pedir cotización</a>",
+      "css": ".ds-accion-primaria { display: inline-block; background: var(--naranja, #D4653A); color: var(--tinta-honda, #0E0C16); padding: 16px 40px; font-family: var(--sans, 'Archivo Variable', sans-serif); font-size: 15px; font-weight: 700; font-stretch: 106%; text-decoration: none; border: 0; border-radius: 0; box-shadow: 0 10px 26px -12px rgba(212, 101, 58, 0.9); transition: transform 260ms cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), background 260ms cubic-bezier(0.16,1,0.3,1); } .ds-accion-primaria:hover { background: var(--naranja-claro, #E8834F); transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(212, 101, 58, 0.95); } .ds-accion-primaria:active { transform: translateY(0); } .ds-accion-primaria:focus-visible { outline: 2px solid var(--naranja, #D4653A); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Action",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary path — tracked uppercase micro-label with no box.",
+      "html": "<a class=\"ds-accion-secundaria\" href=\"#regiones\">Ver cómo funciona</a>",
+      "css": ".ds-accion-secundaria { font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 78%; font-weight: 600; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--hueso-tenue, #A89F93); text-decoration-color: var(--violeta, #5F5870); text-underline-offset: 0.22em; text-decoration-thickness: 1px; transition: color 240ms cubic-bezier(0.16,1,0.3,1); } .ds-accion-secundaria:hover { color: var(--naranja, #D4653A); text-decoration-color: var(--naranja, #D4653A); } .ds-accion-secundaria:focus-visible { outline: 2px solid var(--naranja, #D4653A); outline-offset: 3px; }"
+    },
+    {
+      "name": "Latent-Layer Toggle",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Opens a region's second reading on interaction rather than on scroll.",
+      "html": "<button class=\"ds-latente\" type=\"button\">Ver qué hay debajo</button>",
+      "css": ".ds-latente { background: transparent; border: 1px solid #2E2940; color: var(--hueso-tenue, #A89F93); padding: 8px 16px; font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 80%; font-weight: 600; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 0; cursor: pointer; transition: border-color 240ms cubic-bezier(0.16,1,0.3,1), color 240ms cubic-bezier(0.16,1,0.3,1); } .ds-latente:hover { border-color: var(--naranja, #D4653A); color: var(--naranja, #D4653A); } .ds-latente:focus-visible { outline: 2px solid var(--naranja, #D4653A); outline-offset: 3px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Recessed square well; the visitor's typing is set in mono like any other machine value.",
+      "html": "<label class=\"ds-campo\"><span class=\"ds-campo-etiqueta\">Mail o teléfono</span><input class=\"ds-entrada\" type=\"text\" placeholder=\"Cómo te contestamos\" /></label>",
+      "css": ".ds-campo { display: grid; } .ds-campo-etiqueta { font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 76%; font-weight: 600; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hueso-tenue, #A89F93); margin-bottom: 8px; } .ds-entrada { width: 100%; background: var(--tinta-honda, #0E0C16); border: 1px solid #2E2940; border-radius: 0; padding: 16px; font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 14.5px; line-height: 1.55; color: var(--hueso, #E8DCC8); transition: border-color 220ms cubic-bezier(0.16,1,0.3,1), background 220ms cubic-bezier(0.16,1,0.3,1); } .ds-entrada::placeholder { color: var(--violeta, #5F5870); opacity: 1; } .ds-entrada:hover { border-color: var(--violeta, #5F5870); } .ds-entrada:focus-visible { border-color: var(--naranja, #D4653A); background: var(--tinta, #15131E); outline: 2px solid var(--naranja, #D4653A); outline-offset: 2px; }"
+    },
+    {
+      "name": "Region Row",
+      "kind": "nav",
+      "refersTo": "selector-option",
+      "description": "The 01–04 index row and the quote selector row are the same object: dot, number, plain-Spanish name, hex address.",
+      "html": "<ul class=\"ds-indice\"><li><button class=\"ds-fila\" type=\"button\" data-activa><span class=\"ds-punto\"></span><span class=\"ds-n\">02</span><span class=\"ds-nombre\">Sistema a medida</span><span class=\"ds-dir\">0x4000</span></button></li><li><button class=\"ds-fila\" type=\"button\"><span class=\"ds-punto\"></span><span class=\"ds-n\">03</span><span class=\"ds-nombre\">Automatización con IA</span><span class=\"ds-dir\">0x8000</span></button></li></ul>",
+      "css": ".ds-indice { list-style: none; margin: 0; padding: 0; border-top: 1px solid #2E2940; } .ds-fila { width: 100%; display: grid; grid-template-columns: 16px 26px minmax(0,1fr) auto; gap: 16px; align-items: center; padding: 8px 0; background: transparent; border: 0; border-bottom: 1px solid #2E2940; border-radius: 0; text-align: left; cursor: pointer; } .ds-punto { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--violeta, #5F5870); justify-self: center; transition: background 300ms cubic-bezier(0.16,1,0.3,1), border-color 300ms cubic-bezier(0.16,1,0.3,1), box-shadow 300ms cubic-bezier(0.16,1,0.3,1); } .ds-fila[data-activa] .ds-punto { background: var(--naranja, #D4653A); border-color: var(--naranja, #D4653A); box-shadow: 0 0 0 4px rgba(212,101,58,0.18); } .ds-n { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 11px; color: var(--hueso-tenue, #A89F93); } .ds-nombre { font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 88%; font-weight: 600; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hueso-tenue, #A89F93); transition: color 260ms cubic-bezier(0.16,1,0.3,1); } .ds-dir { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 10.5px; color: var(--violeta, #5F5870); } .ds-fila[data-activa] .ds-nombre, .ds-fila[data-activa] .ds-n, .ds-fila:hover .ds-nombre { color: var(--hueso, #E8DCC8); } .ds-fila[data-activa] .ds-dir { color: var(--naranja, #D4653A); } .ds-fila:focus-visible { outline: 2px solid var(--naranja, #D4653A); outline-offset: 3px; }"
+    },
+    {
+      "name": "Unit Card",
+      "kind": "card",
+      "refersTo": "card-unidad",
+      "description": "One of the two operating business units — square, hairlined, ending in a link or a dashed pending placeholder.",
+      "html": "<article class=\"ds-unidad\"><header class=\"ds-unidad-cab\"><h3 class=\"ds-unidad-nombre\">Lingua Campus</h3><span class=\"ds-unidad-estado\">En operación</span></header><p class=\"ds-unidad-desc\">Plataforma de aprendizaje de idiomas.</p><span class=\"ds-pendiente\">Enlace y captura pendientes</span></article>",
+      "css": ".ds-unidad { border: 1px solid #2E2940; background: var(--tinta-alta, #1D1A2A); padding: 40px; display: grid; gap: 16px; align-content: start; border-radius: 0; transition: border-color 320ms cubic-bezier(0.16,1,0.3,1); } .ds-unidad:hover { border-color: var(--violeta, #5F5870); } .ds-unidad-cab { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; } .ds-unidad-nombre { margin: 0; font-family: var(--sans, 'Archivo Variable', sans-serif); font-size: 28px; font-weight: 700; font-stretch: 106%; letter-spacing: -0.02em; line-height: 1.12; color: var(--hueso, #E8DCC8); } .ds-unidad-estado { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--naranja, #D4653A); white-space: nowrap; } .ds-unidad-desc { margin: 0; font-family: var(--sans, 'Archivo Variable', sans-serif); font-size: 15px; line-height: 1.6; color: var(--hueso-tenue, #A89F93); max-width: 42ch; } .ds-pendiente { justify-self: start; font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 80%; font-weight: 600; font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--naranja, #D4653A); border: 1px dashed var(--naranja, #D4653A); padding: 4px 8px; }"
+    },
+    {
+      "name": "Sticky Bar",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "56px sticky header: indivisible lockup left, numbered region links centre.",
+      "html": "<header class=\"ds-barra\"><a class=\"ds-lockup\" href=\"#portada\"><span>Origen MdP</span><span>— Costa Tech</span></a><nav class=\"ds-nav\"><a href=\"#regiones\"><span class=\"ds-nav-n\">02</span><span>Las regiones</span></a><a href=\"#propios\"><span class=\"ds-nav-n\">03</span><span>Lo nuestro</span></a></nav></header>",
+      "css": ".ds-barra { position: sticky; top: 0; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 40px; background: rgba(21,19,30,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid #2E2940; } .ds-lockup { display: inline-flex; align-items: baseline; gap: 4px; text-decoration: none; font-family: var(--sans, 'Archivo Variable', sans-serif); font-size: 14px; font-weight: 700; font-stretch: 112%; letter-spacing: 0.03em; text-transform: uppercase; color: var(--hueso, #E8DCC8); white-space: nowrap; } .ds-nav { display: flex; gap: 24px; } .ds-nav a { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 76%; font-weight: 600; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hueso-tenue, #A89F93); text-decoration: none; white-space: nowrap; padding: 4px 0; border-bottom: 1px solid transparent; transition: color 240ms cubic-bezier(0.16,1,0.3,1); } .ds-nav-n { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 10px; } .ds-nav a:hover { color: var(--naranja, #D4653A); border-bottom-color: var(--naranja, #D4653A); } .ds-nav a:focus-visible { outline: 2px solid var(--naranja, #D4653A); outline-offset: 3px; }"
+    },
+    {
+      "name": "Byte Field",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature: the unallocated region's live hex field. Rendered here at rest; in the build it mutates 6 cells per ~100ms tick.",
+      "html": "<div class=\"ds-campo-bytes\" aria-hidden=\"true\"><span>3f</span><span>a1</span><span data-vivo>0c</span><span>7e</span><span>b4</span><span>29</span><span>d8</span><span>55</span><span>1a</span><span>e3</span><span>66</span><span data-vivo>9b</span><span>2d</span><span>c7</span><span>40</span><span>8f</span></div>",
+      "css": ".ds-campo-bytes { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px 7px; font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 12.5px; line-height: 1.4; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; user-select: none; } .ds-campo-bytes span { color: var(--byte, #56506E); text-align: center; transition: color 420ms cubic-bezier(0.16,1,0.3,1); } .ds-campo-bytes span[data-vivo] { color: var(--byte-vivo, #A396C9); transition-duration: 0ms; }"
+    },
+    {
+      "name": "Leader-Line Callout",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature: a 2D label above the 3D scene — dot, 52px line, mono uppercase text. Never drawn inside the 3D space.",
+      "html": "<div class=\"ds-llamada\"><span class=\"ds-llamada-punto\"></span><span class=\"ds-llamada-linea\"></span><span class=\"ds-llamada-texto\">Código en tus manos</span></div>",
+      "css": ".ds-llamada { display: inline-flex; align-items: center; gap: 0; } .ds-llamada-punto { width: 6px; height: 6px; border-radius: 50%; background: var(--naranja, #D4653A); flex-shrink: 0; } .ds-llamada-linea { width: 52px; height: 1px; background: var(--naranja, #D4653A); opacity: 0.6; } .ds-llamada-texto { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hueso, #E8DCC8); white-space: nowrap; padding: 0 8px; }"
+    },
+    {
+      "name": "Flat Address Map Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature: the narrow-viewport replacement for the 3D stack — a 62px mono address gutter beside the region body.",
+      "html": "<div class=\"ds-plana\"><div class=\"ds-plana-etiqueta\">Mapa de memoria</div><div class=\"ds-fila-plana\"><div class=\"ds-dir-plana\">0x4000</div><div class=\"ds-cuerpo-plano\"><div class=\"ds-nombre-plano\">Sistema a medida</div><div class=\"ds-barra-plana\"><div class=\"ds-bloques\"><div class=\"ds-bloque\" style=\"width:62%\"></div></div></div></div></div></div>",
+      "css": ".ds-plana { width: 100%; border: 1px solid #2E2940; background: var(--tinta-alta, #1D1A2A); padding: 24px; border-radius: 0; } .ds-plana-etiqueta { font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 78%; font-weight: 600; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hueso-tenue, #A89F93); padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #2E2940; } .ds-fila-plana { display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 16px; align-items: start; } .ds-dir-plana { font-family: var(--mono, 'Chivo Mono Variable', monospace); font-size: 10.5px; letter-spacing: 0.04em; color: var(--hueso-tenue, #A89F93); padding-top: 2px; } .ds-cuerpo-plano { display: grid; gap: 8px; min-width: 0; } .ds-nombre-plano { font-family: var(--sans, 'Archivo Variable', sans-serif); font-stretch: 80%; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hueso, #E8DCC8); } .ds-barra-plana { border-left: 1px solid rgba(95,88,112,0.45); padding-left: 16px; } .ds-bloques { display: grid; gap: 7px; padding: 2px 0; } .ds-bloque { height: 7px; background: var(--hueso, #E8DCC8); opacity: 0.9; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Memory Map",
+    "overview": "The page is a memory map of the visitor's operation. Regions are allocated in ascending address order, and that order is the only law of placement on the surface: nothing sits anywhere because it looked good there. Beneath the allocated regions a field of live bytes keeps churning on its own from the moment the page loads — unclaimed matter, still running by hand. What is sold here is the transition from that noise into structure, so the system's job is to make both states materially present at once and let the visitor watch one become the other.\n\nThe world is drawn from the IT and software materials themselves — hex addresses, byte fields, allocated blocks, isometric planes, leader-line callouts — and deliberately refuses the category's default dress. There is no gradient mesh, no glass, no dotted grid, no neon-on-near-black. The ground is tinta, a violet-cast ink that is emphatically not a neutral near-black; the single live accent is a burnt orange with body in it, not a glow. Every region carries its name in plain Spanish at full display size, so the map reads as an offer rather than as wallpaper.\n\nDensity is deliberate and unequal: display type is set wide and tight, labels are set narrow and wide-tracked, and monospace carries every address, byte and measurement without exception. Motion is part of the system, not a finish: idle churn, scroll-driven allocation, and staggered reveals are three expressions of one orchestrated behaviour, and all three collapse to a legible resting state under prefers-reduced-motion.",
+    "keyCharacteristics": [
+      "Violet-cast ink ground, never neutral black, never pure black.",
+      "One burnt-orange accent, reserved for the active region and the primary action.",
+      "One variable type family worked across its width axis (76%–119%), plus one monospace for all machine values.",
+      "Zero corner radius everywhere except state dots; hairline rules do the dividing.",
+      "Ascending address order governs reading order; every region is numbered 01–04 and addressed in hex.",
+      "Motion is idle-from-load, scroll-driven, and reduced-motion-safe by construction."
+    ],
+    "rules": [
+      { "name": "The One Live Region Rule", "body": "Naranja marks exactly one region at a time, plus the primary action. If two regions are orange at once, the map has stopped saying which one is being explained.", "section": "colors" },
+      { "name": "The Never-Neutral Ground Rule", "body": "The ground is violet-cast ink and its three siblings. Pure black, neutral grey, and near-black-with-neon are all out of world; the cast in the ink is what separates this page from the category.", "section": "colors" },
+      { "name": "The Hueso Tenue Floor Rule", "body": "Running text never goes dimmer than hueso-tenue. Violeta is a structural colour — borders, bars, markers — and is not a text colour.", "section": "colors" },
+      { "name": "The Machine Voice Rule", "body": "Chivo Mono carries every address, byte, measurement and machine-echoed value — including what the visitor types into the form. Prose is never set in mono; a number the machine produced is never set in Archivo.", "section": "typography" },
+      { "name": "The Width-Axis Rule", "body": "Hierarchy is expressed on the width axis before it is expressed on size. Labels narrow (76–88%), display wide (119%). Never introduce a second sans family to do what the axis already does.", "section": "typography" },
+      { "name": "The Plain Name Rule", "body": "Every region label is plain Spanish at full size, with no cleverness and no abbreviation. The name of the offer is the offer.", "section": "typography" },
+      { "name": "The Indivisible Lockup Rule", "body": "\"Origen MdP — Costa Tech\" is one lockup and is never split across lines or used by halves. On narrow viewports it condenses on the width axis (112% → 86%) and drops to 11.5px rather than breaking.", "section": "typography" },
+      { "name": "The Ascending Address Rule", "body": "Placement follows the address. Regions read 0x0000 upward, top to bottom, in every layout — the isometric stack, the index, the flat narrow-viewport map and the quote selector all agree. There is no arbitrary position on this page.", "section": "layout" },
+      { "name": "The Designed Narrow Rule", "body": "The phone gets a different instrument, not a squeezed one. The 3D stack does not shrink into a phone; it is replaced by the flat address gutter, and the idle churn survives there at a reduced cell budget.", "section": "layout" },
+      { "name": "The Lift-Above-All Rule", "body": "The active layer clears the entire stack (translateZ(236px)), it does not merely step up one rung. A region under discussion is never partially occluded — a byte field seen through a slot is a bug, not a texture.", "section": "elevation" },
+      { "name": "The Accent-Only Shadow Rule", "body": "Every soft shadow in this system is orange-tinted and state-bound. Neutral drop shadows and hard offset shadows are not part of this world.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do place by address. Ascending hex order is the only ordering law on this page; every view of the regions must agree with it.",
+      "Do keep exactly one region live at a time, in naranja, everywhere it appears at once — plane, callouts, index row, address.",
+      "Do set every address, byte, measurement and user-typed value in Chivo Mono with tabular numerals, and everything a person wrote in prose in Archivo.",
+      "Do express hierarchy on the width axis first (76% labels → 119% display) before reaching for size or a second family.",
+      "Do ship the hidden reveal state behind the .js class that an inline <head> script sets before paint. Content is present and visible without JavaScript, without hydration, and if the observer never fires. This pattern is load-bearing and any new animated reveal must adopt it.",
+      "Do give every motion a reduced-motion resting state in the same stylesheet that dims something. Nothing that scroll activation turns on may stay off for a user who cannot scroll it on.",
+      "Do keep the byte field decorative and aria-hidden, and keep every region name, address and callout as real text in the accessibility tree.",
+      "Do theme the browser's own surfaces from the palette — selection, caret, accent-color, scrollbar track and thumb, :focus-visible, underline offset, tabular numerals. The page does not stop at its own edge.",
+      "Do mark missing proof as a designed placeholder in the world's notation (dashed orange hairline, mono label), never as a filled-in stand-in."
+    ],
+    "donts": [
+      "Don't use a neutral near-black or pure black ground. The violet cast in tinta is the identity.",
+      "Don't treat naranja as a surface colour or a glow. It is a pigment with body, reserved for the live region and the primary action.",
+      "Don't set running text, placeholders or addresses in violeta. It is a structural colour for borders, bars and markers.",
+      "Don't round a corner. Radius exists only for state dots.",
+      "Don't lift an active layer partway. It clears the whole stack or it is not the active layer.",
+      "Don't put a callout label inside the 3D space, and don't terminate a leader line in empty ground — the line must land on the lifted plane's measured band.",
+      "Don't jack the scroll, scrub a timeline, or make any content depend on an animation in order to be readable.",
+      "Don't load type through next/font/google. Both families are self-hosted because that path silently degrades to Arial when the build host cannot reach fonts.gstatic.com.",
+      "Don't imply evidence that does not exist — no clients, testimonials, metrics, awards, press or pricing have a visual slot in this system, and none may be invented to fill a layout.",
+      "Don't split \"Origen MdP — Costa Tech\". It condenses on the width axis; it never breaks or appears by halves."
+    ]
+  }
+}

@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Origen MdP — Costa Tech
 
-## Getting Started
+Sitio de marca y portfolio de Origen MdP — Costa Tech, empresa de IT de
+Mar del Plata. Presenta tres servicios —desarrollo a medida, consultoría
+de automatización con IA y capacitación— y las unidades de negocio
+propias. El objetivo de la página es que el visitante pida una
+cotización.
 
-First, run the development server:
+La página se estructura como un **mapa de memoria**: las regiones se
+reservan en orden de dirección ascendente, empezando por lo que hoy no
+está asignado (la operación hecha a mano) y siguiendo por cada servicio.
+
+## Stack
+
+- Next.js 15 (App Router) + React 19, TypeScript en modo `strict`
+- CSS Modules y variables CSS — sin framework de estilos
+- Tipografías autoalojadas vía `@fontsource-variable`: Archivo y Chivo
+  Mono, de Omnibus-Type. Van autoalojadas a propósito, porque
+  `next/font/google` necesita salida a `fonts.gstatic.com` al compilar.
+
+## Desarrollo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La app queda en http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # build de producción: tipos, lint y prerender
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estructura
 
-## Learn More
+```
+app/            rutas del App Router, estilos globales, API
+  api/cotizar/  ruta que recibe los pedidos de cotización
+components/     componentes de la página, cada uno con su CSS Module
+lib/content.ts  todo el texto y los datos de la página
+lib/mapa.ts     las regiones del mapa de memoria
+```
 
-To learn more about Next.js, take a look at the following resources:
+Todo el texto vive en `lib/content.ts`: para cambiar una palabra de la
+página no hace falta tocar un componente.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Variables de entorno
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copiar `.env.example` a `.env.local` y completar:
 
-## Deploy on Vercel
+| Variable | Para qué |
+| --- | --- |
+| `RESEND_API_KEY` | Clave del proveedor de mail |
+| `COTIZACIONES_PARA` | Casilla que recibe los pedidos |
+| `COTIZACIONES_DESDE` | Remitente verificado en el dominio |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Sin esas variables, `POST /api/cotizar` responde 503 con un mensaje
+honesto y el formulario ofrece WhatsApp como alternativa. Nunca finge
+haber enviado nada.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Pendientes antes de publicar
+
+- **`WHATSAPP_NUMERO`** en `lib/content.ts` está vacío. Mientras lo esté,
+  el formulario muestra el cartel "WhatsApp pendiente de configurar".
+- **Proveedor de mail** sin definir. El código está escrito contra
+  Resend porque no requiere infraestructura propia; cambiarlo es
+  reemplazar el `fetch` de `app/api/cotizar/route.ts` y nada más.
+
+## Documentación
+
+- [`PRODUCT.md`](PRODUCT.md) — a quién le habla la página, qué ofrece y
+  por qué está decidida así.
+- [`DESIGN.md`](DESIGN.md) — el sistema de diseño: color, tipografía,
+  espaciado, movimiento y las reglas que sostienen la página.
