@@ -1,0 +1,390 @@
+/* ---------------- Escena isométrica ---------------- */
+
+.escena {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 72vh;
+  display: grid;
+  place-items: center;
+  perspective: 1400px;
+}
+
+.pila {
+  position: relative;
+  width: 296px;
+  height: 296px;
+  transform-style: preserve-3d;
+  /* Un solo ángulo para todo el conjunto: las capas quedan paralelas.
+     El retroceso en Z baja el punto de partida, para que el recorrido
+     de abajo hacia arriba quede centrado en el cuadro. */
+  transform: rotateX(56deg) rotateZ(-40deg) translate3d(0, 0, -128px);
+}
+
+/* La pila empieza armada abajo y termina armada arriba. --avance va de
+   0 a 4 con el scroll; cada capa sube cuando le toca su turno y se queda
+   donde subió, así la de arriba la espera y la pila se vuelve a armar
+   en la posición nueva.
+   --r es cuánto subió ESTA capa: 0 abajo, 1 arriba.
+   Abajo el mazo va al revés del índice —la 01 arriba de todo, la última
+   apoyada en la base— así la que sube es siempre la de arriba, como
+   sacar la carta de encima. Arriba se apila por orden de llegada, así la
+   recién llegada queda a la vista y no se mete abajo de las anteriores.
+   El mazo termina dado vuelta: es lo que pasa al mover un mazo carta por
+   carta. La separación (18px) es la misma en las dos puntas, por eso el
+   conjunto se lee armado en los dos extremos y sólo se desarma en el
+   tránsito. */
+.capa {
+  --r: clamp(0, calc(var(--avance, 4) - var(--indice)), 1);
+  --abajo: calc((var(--ultima, 3) - var(--indice)) * 18px);
+  --arriba: calc(262px + var(--indice) * 18px);
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: translate3d(
+    0,
+    0,
+    calc(var(--abajo) + var(--r) * (var(--arriba) - var(--abajo)))
+  );
+  transition: transform 640ms var(--salida);
+}
+
+.plano {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--violeta);
+  background: linear-gradient(
+    to bottom,
+    rgba(36, 31, 53, 0.92),
+    rgba(21, 19, 30, 0.92)
+  );
+  padding: 14px 16px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  /* El marco se ve siempre: una región sin asignar es un estrato real,
+     no un plano que se está borrando. Lo que se apaga es el contenido. */
+  box-shadow: 0 1px 0 rgba(95, 88, 112, 0.5);
+  transition:
+    border-color 620ms var(--salida),
+    box-shadow 620ms var(--salida);
+}
+
+.capa[data-activa] .plano {
+  border-color: var(--naranja);
+  box-shadow:
+    0 1px 0 rgba(212, 101, 58, 0.6),
+    0 22px 44px -26px rgba(212, 101, 58, 0.5);
+}
+
+.capa[data-libre] .plano {
+  border-style: dashed;
+}
+
+.cabeceraCapa {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(95, 88, 112, 0.45);
+  padding-bottom: 7px;
+}
+
+.direccionCapa {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--hueso-tenue);
+  white-space: nowrap;
+}
+
+.capa[data-activa] .direccionCapa {
+  color: var(--naranja);
+}
+
+/* Los rótulos dentro del plano van deformados por la isometría: son
+   ambiente, no jerarquía. La lectura real la llevan el índice y las
+   llamadas 2D. Sólo la capa activa sube a tinta plena. */
+.nombreCapa {
+  font-stretch: 76%;
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  opacity: 0.72;
+  white-space: nowrap;
+  transition:
+    color 520ms var(--salida),
+    opacity 520ms var(--salida);
+}
+
+.capa[data-activa] .nombreCapa {
+  color: var(--hueso);
+  opacity: 1;
+}
+
+/* Ruido y estructura ocupan la misma caja y se cruzan al asignarse. */
+.contenidoCapa {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0.5;
+  transition: opacity 620ms var(--salida);
+}
+
+.capa[data-asignada] .contenidoCapa {
+  opacity: 1;
+}
+
+.ruido,
+.estructura {
+  transition:
+    opacity 700ms var(--salida),
+    filter 700ms var(--salida),
+    transform 700ms var(--salida);
+}
+
+/* En reposo la estructura queda fantasma debajo del ruido: los dos
+   estados conviven desde la primera pantalla, así la portada no es un
+   volcado hexadecimal de fondo sino una región que todavía no se
+   reservó. Al asignarse, el fantasma se vuelve sólido. */
+.estructura {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  /* La estructura en reposo tiene que leerse como materia, no como una
+     mancha: va en violeta a densidad alta, al mismo nivel de presencia
+     que el ruido que tiene encima. */
+  opacity: 0.8;
+  transform: scaleY(0.88);
+  transform-origin: bottom left;
+}
+
+/* El ruido se va desenfocando mientras la estructura se asienta. */
+.ruido[data-fuera] {
+  opacity: 0;
+  filter: blur(3px);
+  transform: scale(1.04);
+}
+
+.estructura[data-dentro] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Zona clicable: la capa entera responde, sin dibujar un botón encima. */
+.zona {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+.zona:focus-visible {
+  outline: 2px solid var(--naranja);
+  outline-offset: 4px;
+}
+
+/* ---------------- Llamadas ancladas a la capa ---------------- */
+
+/* Los anclajes son puntos sobre el plano, dentro del espacio 3D: se
+   mueven con la capa sin que nadie calcule coordenadas. */
+.anclajes {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.ancla {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.ancla[data-lado="izq"] {
+  left: 0;
+  top: 46%;
+}
+
+.ancla[data-lado="der"] {
+  left: 100%;
+  top: 54%;
+}
+
+/* Contrarrota exactamente la cadena del contenedor —rotateX(56) y
+   rotateZ(-40)— para que el texto quede derecho en pantalla mientras el
+   ancla sigue apoyada sobre el plano. */
+.contra {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  opacity: 0;
+  animation: entrarLlamada 560ms var(--salida) forwards;
+  animation-delay: var(--retardo);
+}
+
+.ancla[data-lado="izq"] .contra {
+  right: 0;
+  flex-direction: row-reverse;
+  transform: rotateZ(40deg) rotateX(-56deg);
+  transform-origin: right center;
+}
+
+.ancla[data-lado="der"] .contra {
+  left: 0;
+  transform: rotateZ(40deg) rotateX(-56deg);
+  transform-origin: left center;
+}
+
+.puntoLlamada {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--naranja);
+  flex-shrink: 0;
+}
+
+.lineaLlamada {
+  width: 52px;
+  height: 1px;
+  background: var(--naranja);
+  opacity: 0.6;
+}
+
+.textoLlamada {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hueso);
+  white-space: nowrap;
+  padding: 0 8px;
+}
+
+/* Sólo opacidad: `transform` lo ocupa la contrarrotación, y animarlo acá
+   la pisaría y dejaría el rótulo tumbado con el plano. */
+@keyframes entrarLlamada {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------------- Mapa plano ---------------- */
+
+.plana {
+  width: 100%;
+  border: var(--filete);
+  background: var(--tinta-alta);
+  padding: var(--s-4);
+}
+
+.etiquetaPlana {
+  font-stretch: 78%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-3);
+  border-bottom: var(--filete);
+}
+
+.filasPlanas {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.filaPlana {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: var(--s-3);
+  align-items: start;
+}
+
+.gutter {
+  padding-top: 2px;
+}
+
+.direccionPlana {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--hueso-tenue);
+}
+
+/* La región sin asignar es la que está viva: lleva el acento, como la
+   capa activa en la pila. Antes iba en violeta, que no llega a 4,5:1. */
+.filaPlana[data-libre] .direccionPlana {
+  color: var(--naranja);
+}
+
+.cuerpoPlano {
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.nombrePlano {
+  font-stretch: 80%;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hueso);
+}
+
+.barraPlana {
+  display: block;
+  border-left: 1px solid rgba(95, 88, 112, 0.45);
+  padding-left: var(--s-3);
+}
+
+.plana[data-compacto] .filaPlana {
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: var(--s-2);
+}
+
+.plana[data-compacto] .nombrePlano {
+  font-size: 10px;
+}
+
+/* Quien no puede depender del scroll no puede quedarse con el contenido
+   apagado: sin movimiento, todas las capas se leen. */
+@media (prefers-reduced-motion: reduce) {
+  .contenidoCapa {
+    opacity: 1;
+  }
+  .ruido[data-fuera] {
+    opacity: 0;
+    filter: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .escena {
+    max-height: 56vh;
+  }
+  .pila {
+    width: 250px;
+    height: 250px;
+  }
+  .capa {
+    --abajo: calc((var(--ultima, 3) - var(--indice)) * 16px);
+    --arriba: calc(212px + var(--indice) * 16px);
+  }
+  .lineaLlamada {
+    width: 32px;
+  }
+}

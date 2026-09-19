@@ -1,0 +1,1241 @@
+/* ---------------- 03 · Qué se contrata ---------------- */
+
+/* Cuatro bandas separadas por filete, cerradas arriba y abajo: la
+   sección es una tabla de cuatro filas, no cuatro tarjetas sueltas. */
+.bandas {
+  display: grid;
+  border-top: var(--filete);
+}
+
+.banda {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-6);
+  align-items: center;
+  min-height: 42vh;
+  padding: var(--s-5) 0;
+  border-bottom: var(--filete);
+}
+
+/* La marca alterna de lado. Sólo acá arriba: ver el corte de 900px. */
+.banda[data-marca="der"] .marca {
+  order: 2;
+}
+
+.texto {
+  display: grid;
+  gap: var(--s-2);
+  align-content: center;
+  justify-self: start;
+  max-width: 46ch;
+}
+
+.n {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--naranja);
+}
+
+.nombre {
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.12;
+  font-weight: 700;
+  font-stretch: 106%;
+  letter-spacing: -0.02em;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.detalle {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--hueso-tenue);
+  max-width: 46ch;
+}
+
+/* ---------------- La marca ---------------- */
+
+/* --alza es la única perilla de llegada de las cuatro marcas: 1 es sin
+   resolver, 0 es resuelta. Todo lo que entra —la elevación de las
+   placas, el ancho de las piezas, el color de las unidades, la densidad
+   del ruido— se deriva de ella, y por eso el <noscript> del layout
+   devuelve las cuatro marcas a su estado final con una sola línea.
+
+   El escondite vive detrás de la clase .js, igual que .revela: con
+   JavaScript apagado el observer nunca corre, y una marca que espera
+   para siempre sería una marca rota. */
+.marca {
+  --alza: 0;
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 5 / 4;
+}
+
+/* La marca se apoya en el margen de la sección, no en el centro de su
+   columna: alineada con el título de arriba, la banda se lee como una
+   doble página y el aire queda todo junto en el medio en vez de repartido
+   en dos zanjas. */
+.banda[data-marca="izq"] .marca {
+  justify-self: start;
+}
+
+.banda[data-marca="der"] .marca {
+  justify-self: end;
+}
+
+:global(.js) .marca:not([data-llego]) {
+  --alza: 1;
+}
+
+/* -------- 01 · Sitio o tienda: la misma vidriera en tres anchos -------- */
+
+/* Los tres al piso, bajando, y el grupo centrado en la caja de la marca:
+   ficha de medidas y no foto de producto.
+
+   Los anchos viven acá y no en el componente porque son composición, no
+   contenido: abajo de 900px el reparto cambia —el teléfono crece para
+   seguir siendo un teléfono y no una astilla— y ésa es una decisión del
+   stylesheet. */
+.trio {
+  --ancho-escritorio: 64%;
+  --ancho-tableta: 21.5%;
+  --ancho-telefono: 9.5%;
+  --claro: 2.5%;
+
+  /* Un píxel a escala de la caja: 0.2273% de 440 es exactamente 1. Todo
+     lo que se *dibuja* adentro de las tres pantallas se mide en esta
+     unidad, así la vidriera entra igual de bien en los 440px de la caja
+     grande que en los 340px del teléfono, sin cortes de por medio y sin
+     que el pie quede aplastado en un ancho intermedio. Lo que se *lee*
+     —la dirección, las medidas— no: el texto conserva su cuerpo, como en
+     el anillo de la 04. Una maqueta encoge; una palabra no. */
+  --px: 0.2273cqw;
+
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns:
+    var(--ancho-escritorio)
+    var(--ancho-tableta)
+    var(--ancho-telefono);
+  grid-template-rows: auto auto;
+  column-gap: var(--claro);
+  row-gap: var(--s-1);
+  align-content: center;
+  align-items: end;
+}
+
+/* Los tres marcos están desde antes de que la marca llegue, y lo que
+   llega es lo de adentro. Es la misma frase que hace el mapa arriba —el
+   ruido sin asignar que se vuelve estructura— y desaparecería si el
+   marco entrara con un fundido: no habría dónde ver el ruido antes de
+   que se vuelva tienda. Las tres pantallas vacías esperando también
+   dicen algo, y es cierto. */
+.pantalla {
+  grid-row: 1;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  border: var(--filete);
+  background: var(--tinta-alta);
+  overflow: hidden;
+}
+
+/* --k es cuánto detalle aguanta cada pantalla. No es el cociente real de
+   anchos —el teléfono mide 0,15 del escritorio, y a esa escala los
+   márgenes quedan en medio píxel y la vidriera se vuelve papilla— sino
+   algo parecido a su raíz: cada pantalla se dibuja con el grosor que su
+   tamaño soporta, que es exactamente lo que hace un diseño responsive de
+   verdad y no un reflow. */
+.escritorio {
+  --k: 1;
+  aspect-ratio: 1.38;
+}
+
+.tablet {
+  --k: 0.56;
+  aspect-ratio: 0.74;
+}
+
+.telefono {
+  --k: 0.34;
+  aspect-ratio: 0.47;
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--k) * 26 * var(--px));
+  padding: 0 calc(var(--k) * 10 * var(--px));
+  border-bottom: var(--filete);
+}
+
+.dir {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--hueso-tenue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Donde la dirección no entra sin recortarse no se recorta: se dibuja.
+   Media palabra en mono a 5px no es una dirección, es basura. */
+.dirTic {
+  width: 62%;
+  height: max(1px, calc(var(--k) * 3 * var(--px)));
+  background: var(--violeta);
+  opacity: 0.6;
+}
+
+.lienzo {
+  position: relative;
+  background: var(--tinta-honda);
+  overflow: hidden;
+}
+
+/* El ruido no se va del todo: los datos del negocio siguen corriendo
+   abajo de la tienda terminada. Se desenfoca y baja a 0.14, no a 0. */
+.ruidoSitio {
+  position: absolute;
+  inset: 0;
+  padding: calc(var(--k) * 10 * var(--px));
+  opacity: calc(0.14 + var(--alza) * 0.76);
+  filter: blur(calc((1 - var(--alza)) * 1.6px));
+  transition:
+    opacity 900ms var(--salida) 260ms,
+    filter 900ms var(--salida) 260ms;
+}
+
+.pagina {
+  position: relative;
+  height: 100%;
+  padding: calc(var(--k) * 10 * var(--px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--k) * 6 * var(--px));
+}
+
+/* Un solo reloj para las tres pantallas: --base lo pone cada una, --i lo
+   pone cada pieza en su orden de lectura, y el retardo sale de un calc()
+   sobre los dos. No hay un solo retardo escrito a mano, así que el
+   barrido no se puede desfasar de sí mismo. */
+.barrido,
+.lockup,
+.carrito,
+.enlace,
+.grafico i {
+  transition: transform 560ms var(--salida)
+    calc(var(--base) + var(--i, 0) * 70ms);
+}
+
+/* Lo que es barra barre desde el borde izquierdo, como se arma una
+   página: primero el ancho, después la que sigue. */
+.barrido,
+.enlace {
+  transform: scaleX(calc(1 - var(--alza)));
+  transform-origin: left center;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--k) * 6 * var(--px));
+  flex: 0 0 auto;
+}
+
+.lockup,
+.carrito {
+  width: calc(var(--k) * 10 * var(--px));
+  height: calc(var(--k) * 10 * var(--px));
+  flex: 0 0 auto;
+  transform: scale(calc(1 - var(--alza)));
+}
+
+/* La marca del negocio, no la nuestra: es lo único en hueso adentro de
+   la vidriera, porque es lo único que ahí ya está asignado. */
+.lockup {
+  background: var(--hueso);
+}
+
+.carrito {
+  border: 1px solid var(--violeta);
+}
+
+.enlaces {
+  display: flex;
+  gap: calc(var(--k) * 6 * var(--px));
+  margin-left: auto;
+}
+
+.enlace {
+  width: calc(var(--k) * 14 * var(--px));
+  height: max(1px, calc(var(--k) * 3 * var(--px)));
+  background: var(--violeta);
+  opacity: 0.7;
+}
+
+.titular {
+  width: 70%;
+  height: calc(var(--k) * 14 * var(--px));
+  flex: 0 0 auto;
+  background: var(--violeta);
+  opacity: 0.92;
+}
+
+.bajada {
+  width: 46%;
+  height: max(1px, calc(var(--k) * 5 * var(--px)));
+  flex: 0 0 auto;
+  background: var(--violeta);
+  opacity: 0.55;
+}
+
+/* Tres columnas, dos, una. Es la única diferencia entre las tres
+   pantallas y es todo el argumento de la banda. */
+.grilla {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: calc(var(--k) * 6 * var(--px));
+}
+
+.producto {
+  display: grid;
+  gap: calc(var(--k) * 4 * var(--px));
+}
+
+.foto {
+  aspect-ratio: 3 / 2;
+  background: var(--violeta);
+  opacity: 0.42;
+}
+
+/* El precio existe y la cifra no: el signo en mono y la cifra tachada.
+   Es la notación con la que esta página marca lo que todavía no tiene
+   —dibujar un número acá sería inventarle un precio a un negocio que no
+   es el nuestro. En la tablet y en el teléfono el signo se cae: a 5px no
+   es un peso, es una mancha, y una mancha no dice nada. */
+.precio {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--k) * 4 * var(--px));
+}
+
+.peso {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: calc(var(--k) * 9 * var(--px));
+  line-height: 1;
+  color: var(--hueso-tenue);
+}
+
+.cifra {
+  flex: 1 1 auto;
+  max-width: calc(var(--k) * 34 * var(--px));
+  height: max(1px, calc(var(--k) * 4 * var(--px)));
+  background: var(--violeta);
+  opacity: 0.85;
+}
+
+/* El pie se lleva la holgura que sobre y la empuja abajo, así la
+   vidriera se apoya en el piso de la pantalla en vez de flotar. */
+.pie {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--k) * 8 * var(--px));
+  flex: 1 1 auto;
+}
+
+/* Seis barras parejas adentro de su filete, sin eje y sin cifras: es un
+   módulo de la página —una tienda muestra datos— y no una métrica.
+   Arrancan en 64 y terminan en 58 justamente para que no haya curva que
+   suba: acá no se afirma ningún resultado. El filete es lo que las
+   vuelve un componente y no seis barras sueltas. */
+.grafico {
+  display: flex;
+  align-items: flex-end;
+  gap: max(1px, calc(var(--k) * 3 * var(--px)));
+  flex: 0 0 auto;
+  width: calc(var(--k) * 88 * var(--px));
+  height: calc(var(--k) * 30 * var(--px));
+  padding: calc(var(--k) * 3 * var(--px));
+  border: var(--filete);
+}
+
+.grafico i {
+  flex: 1 1 auto;
+  height: var(--h);
+  background: var(--violeta);
+  opacity: 0.75;
+  transform: scaleY(calc(1 - var(--alza)));
+  transform-origin: bottom center;
+}
+
+/* El único naranja de la marca, y es el de la tienda, no el nuestro: del
+   mismo orden que los cubos encendidos de la 02 y el nodo que cambia de
+   manos en la 04. Adentro de una marca el naranja señala lo que está
+   vivo, y en una tienda lo que está vivo es comprar. */
+.comprar {
+  width: calc(var(--k) * 52 * var(--px));
+  height: calc(var(--k) * 15 * var(--px));
+  flex: 0 0 auto;
+  margin-left: auto;
+  background: var(--naranja);
+}
+
+.telefono .comprar {
+  width: 100%;
+}
+
+/* La medida de cada pantalla, sobre su propia regla. Es la única cifra
+   que la marca afirma y es verdadera: un ancho, no un resultado. */
+.medida {
+  grid-row: 2;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--hueso-tenue);
+  border-top: var(--filete);
+  padding-top: var(--s-1);
+  opacity: calc(1 - var(--alza));
+  transition: opacity 620ms var(--salida) var(--base);
+}
+
+/* ---------------- 02 · Sistema: el encastre se rearma ---------------- */
+
+/* Sin perspectiva, a propósito. La isometría es una proyección paralela:
+   con perspectiva los cubos altos se agrandan al acercarse al ojo, la
+   silueta dibujada deja de coincidir con la que calcula el componente y
+   el reencuadre queda corto —eran 45px de más arriba, justo los que se
+   comían el filete de la banda—. Además, en paralelo las nueve piezas se
+   dibujan todas del mismo tamaño, que es lo que la marca afirma. */
+.encastre {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* La misma cámara que la pila del mapa —el visitante ya aprendió a leer
+   este ángulo arriba— pero el objeto es otro: acá no hay placas ni
+   direcciones, hay piezas iguales que encastran. El corrimiento centra
+   el conjunto sobre las formas que se arman, que no son simétricas. */
+.campo {
+  --lado: 70px;
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  /* --cx y --cy los calcula el componente para cada forma, en unidades
+     de lado: van primero en la lista, o sea en espacio de pantalla, así
+     corrigen la silueta ya proyectada. La transición es la misma que la
+     de los cubos, para que el reencuadre y el rearmado sean un solo
+     movimiento. */
+  transform: translate(
+      calc(var(--cx) * var(--lado)),
+      calc(var(--cy) * var(--lado))
+    )
+    rotateX(56deg) rotateZ(-40deg);
+  transition: transform 820ms var(--salida);
+}
+
+.cubo {
+  position: absolute;
+  width: var(--lado);
+  height: var(--lado);
+  transform-style: preserve-3d;
+  transform: translate3d(
+    calc(var(--x) * var(--lado)),
+    calc(var(--y) * var(--lado)),
+    calc(var(--z) * var(--lado) + var(--alza) * 90px)
+  );
+  opacity: calc(1 - var(--alza));
+  transition:
+    transform 820ms var(--salida) var(--retardo),
+    opacity 820ms var(--salida) var(--retardo);
+}
+
+/* Las tres caras que la cámara ve. El volumen sale de la escalera tonal
+   del sistema —tinta-capa corona, tinta-alta levanta, tinta es el piso—
+   y la arista la lleva el filete vivo, no una sombra ni un degradé.
+
+   Ninguna cara baja de tinta: con tinta-honda, que es más oscura que el
+   fondo, la cara en sombra se leía como un agujero en la página en vez
+   de como una superficie. La más oscura se funde con el fondo y la
+   arista es la que sostiene la silueta: el bloque toma luz arriba y se
+   apoya en la hoja abajo. */
+.cara {
+  position: absolute;
+  inset: 0;
+  border: var(--filete-vivo);
+  transition:
+    border-color 620ms var(--salida),
+    background-color 620ms var(--salida),
+    box-shadow 620ms var(--salida);
+}
+
+.cara[data-cara="sup"] {
+  background: var(--tinta-capa);
+  transform: translateZ(var(--lado));
+}
+
+.cara[data-cara="izq"] {
+  background: var(--tinta-alta);
+  transform-origin: left center;
+  transform: rotateY(-90deg);
+}
+
+.cara[data-cara="der"] {
+  background: var(--tinta);
+  transform-origin: center bottom;
+  transform: rotateX(-90deg);
+}
+
+/* La pieza en foco: aristas en naranja y la corona apenas teñida, más el
+   mismo florón del acento que usa la capa activa de la pila. Una sola
+   por vez —la regla de una sola región viva vale acá también—, y va
+   rotando entre las cuatro que se mueven. */
+.cubo[data-foco] .cara {
+  border-color: var(--naranja);
+}
+
+/* La corona va en naranja claro, que el sistema reserva para el estado
+   de levante: es la arista que da la sensación de que la pieza prende. */
+.cubo[data-foco] .cara[data-cara="sup"] {
+  border-color: var(--naranja-claro);
+  background: color-mix(in oklab, var(--naranja) 22%, var(--tinta-capa));
+  box-shadow: 0 16px 34px -14px rgba(212, 101, 58, 0.9);
+}
+
+.cubo[data-foco] .cara[data-cara="izq"] {
+  background: color-mix(in oklab, var(--naranja) 14%, var(--tinta-alta));
+}
+
+.cubo[data-foco] .cara[data-cara="der"] {
+  background: color-mix(in oklab, var(--naranja) 8%, var(--tinta));
+}
+
+/* -------------- 03 · Automatización: la cara que te sigue -------------- */
+
+/* Una sola perilla de tamaño, como el --lado del encastre: todo lo de
+   adentro se deriva de ella, así la cara se achica entera en los cortes
+   sin recalcular una sola medida a mano. */
+.bot {
+  --w: 320px;
+  /* Cuánto viaja la pupila adentro del ojo, con la mirada al tope. */
+  --rx: calc(var(--w) * 0.08);
+  --ry: calc(var(--w) * 0.033);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  /* La antena vive arriba de la cabeza y también pesa: sin este empuje
+     el conjunto queda colgado de la mitad de la caja. Es la mitad de lo
+     que la antena mide, que es justo lo que hay que bajar para que el
+     centro del bloque entero caiga en el centro de la marca. */
+  padding-top: calc(var(--w) * 0.13);
+}
+
+/* Despierta, la cabeza es un panel levantado —tinta-alta sobre filete,
+   con la arista de apoyo abajo—; dormida está al ras de la hoja. La
+   silueta ya estaba ahí: lo que llega es la vida, no el objeto. */
+.cabeza {
+  position: relative;
+  width: var(--w);
+  height: calc(var(--w) * 0.76);
+  border: var(--filete);
+  background: color-mix(
+    in oklab,
+    var(--tinta-alta) calc((1 - var(--alza)) * 100%),
+    var(--tinta)
+  );
+  box-shadow: 0 1px 0 rgba(95, 88, 112, calc((1 - var(--alza)) * 0.5));
+  /* Primera capa del giro, la más lenta. El desplazamiento no lleva
+     transición: ya viene suavizado con inercia desde el componente, y
+     encadenar dos suavizados da una cabeza que llega tarde. */
+  transform: translate(calc(var(--gx, 0) * 4px), calc(var(--gy, 0) * 3px));
+  transition:
+    background-color 760ms var(--salida),
+    box-shadow 760ms var(--salida);
+}
+
+/* La antena crece desde el borde de la cabeza y la luz prende última:
+   es el orden en que despierta un aparato. */
+.antena {
+  position: absolute;
+  left: calc(50% - 0.5px);
+  bottom: 100%;
+  width: 1px;
+  height: calc(var(--w) * 0.1);
+  background: var(--violeta);
+  transform-origin: bottom center;
+  transform: scaleY(calc(1 - var(--alza)));
+  transition: transform 620ms var(--salida) 200ms;
+}
+
+/* El único naranja de la marca, y va donde el sistema lo manda: un
+   estado. Late lento —está en línea— con el florón de 4px que la página
+   usa para todo punto activo. */
+.lampara {
+  position: absolute;
+  left: calc(50% - var(--w) * 0.0145);
+  bottom: calc(100% + var(--w) * 0.1);
+  width: calc(var(--w) * 0.029);
+  height: calc(var(--w) * 0.029);
+  background: var(--naranja);
+  box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+  transform: scale(calc(1 - var(--alza)));
+  transition: transform 520ms var(--salida) 560ms;
+}
+
+/* Segunda capa del giro, más rápida que la cabeza. Ese desfasaje es
+   todo el truco: con la cara clavada al panel el conjunto se desliza;
+   con la cara adelantada, la cabeza gira. */
+.rostro {
+  position: absolute;
+  inset: 0;
+  transform: translate(calc(var(--gx, 0) * 7px), calc(var(--gy, 0) * 5px));
+}
+
+/* El visor es el hueco: tinta-honda hundida contra el panel levantado.
+   La profundidad sale de la escalera tonal del sistema, no de una
+   sombra. */
+.visor {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 27%;
+  height: 28%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  overflow: hidden;
+  border: var(--filete);
+  background: color-mix(
+    in oklab,
+    var(--tinta-honda) calc((1 - var(--alza)) * 100%),
+    var(--tinta-alta)
+  );
+  transition: background-color 760ms var(--salida) 120ms;
+}
+
+/* El ojo es la celda que viaja; la pupila, lo que se ve. Van separados
+   porque el viaje no lleva transición —la inercia ya la puso el
+   componente— y la apertura sí. */
+.ojo {
+  display: block;
+  width: calc(var(--w) * 0.058);
+  height: calc(var(--w) * 0.096);
+  transform: translate(
+    calc(var(--px, 0) * var(--rx)),
+    calc(var(--py, 0) * var(--ry))
+  );
+}
+
+.pupila {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--hueso);
+  opacity: calc(1 - var(--alza));
+  /* Los ojos se abren: la pupila entra como una línea y crece. */
+  transform: scaleY(calc(1 - var(--alza) * 0.88));
+  transition:
+    transform 620ms var(--salida) 320ms,
+    opacity 620ms var(--salida) 320ms;
+}
+
+/* El parpadeo es una persiana del material de la cabeza que baja sobre
+   el hueco y vuelve; baja más rápido de lo que sube, como un párpado.
+   Lo dispara el componente a intervalos irregulares: a intervalo fijo
+   se lee como un LED y no como una cara. */
+.parpado {
+  position: absolute;
+  inset: 0;
+  background: var(--tinta-alta);
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform 130ms var(--salida);
+}
+
+.visor[data-parpadea] .parpado {
+  transform: scaleY(1);
+  transition-duration: 80ms;
+  transition-timing-function: ease-in;
+}
+
+/* La boca es una rejilla en su propio hueco, no una sonrisa. El hueco
+   hace falta: sueltas sobre el panel, las barras se leen como un filete
+   punteado que quedó ahí y no como una parte de la cara. Se hunde igual
+   que el visor, y con eso la anatomía de la cabeza queda dicha entera:
+   un panel levantado y dos huecos. */
+.boca {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 70%;
+  width: fit-content;
+  height: calc(var(--w) * 0.075);
+  margin: 0 auto;
+  padding: 0 calc(var(--w) * 0.02);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--w) * 0.025);
+  border: var(--filete);
+  background: color-mix(
+    in oklab,
+    var(--tinta-honda) calc((1 - var(--alza)) * 100%),
+    var(--tinta-alta)
+  );
+  transition: background-color 760ms var(--salida) 180ms;
+}
+
+.diente {
+  width: 4px;
+  height: 60%;
+  background-color: var(--violeta);
+  transform: scaleY(0.66);
+  opacity: calc(1 - var(--alza));
+  transition: opacity 520ms var(--salida) calc(420ms + var(--i) * 60ms);
+}
+
+/* Cuando el bot contesta, una onda recorre la rejilla de izquierda a
+   derecha: cada barra se levanta y se enciende un momento y vuelve. Es
+   lo único de la cara que dice que además de mirar, atiende. */
+.marca[data-vivo] .diente {
+  animation: contesta 5.4s var(--salida) calc(var(--i) * 70ms) infinite;
+}
+
+.marca[data-vivo] .lampara {
+  animation: enLinea 3.2s var(--salida) infinite;
+}
+
+@keyframes contesta {
+  0%,
+  58% {
+    transform: scaleY(0.66);
+    background-color: var(--violeta);
+  }
+  68% {
+    transform: scaleY(1);
+    background-color: var(--hueso);
+  }
+  80%,
+  100% {
+    transform: scaleY(0.66);
+    background-color: var(--violeta);
+  }
+}
+
+@keyframes enLinea {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  46% {
+    opacity: 1;
+  }
+}
+
+/* ------------- 04 · Capacitaciones: el anillo de traspaso ---------- */
+
+/* El viewBox del SVG tiene la proporción de la marca —5:4—, así que un
+   porcentaje quiere decir lo mismo para el dibujo que para los nombres:
+   las dos capas comparten coordenadas sin calcular nada dos veces. */
+.anillo {
+  position: absolute;
+  inset: 0;
+  /* El único tamaño en píxeles del conjunto. El hexágono escala con la
+     caja; el nodo y su glifo no, porque abajo de cierto cuerpo un dibujo
+     de 1px deja de ser un dibujo. */
+  --nodo: 36px;
+  pointer-events: none;
+
+  /* ---- Los tiempos, todos acá ----
+
+     El traspaso: espera --entrada, después una herramienta cada --paso,
+     y cada una tarda --traspaso en cambiar de manos. Corre una sola vez.
+
+     La ronda: arranca cuando el traspaso terminó de asentarse y ya no
+     para. Da una vuelta entera cada --ronda, así que cada herramienta se
+     enciende un turno de --ronda / --piezas. Va bastante más lenta que
+     el traspaso a propósito: el traspaso es un acontecimiento y la ronda
+     es el pulso de algo que quedó funcionando.
+
+     El componente sólo manda el índice de cada pieza y cuántas son; los
+     retardos salen de acá con calc(), que es la única manera de que los
+     dos movimientos no se desfasen cuando alguien toque un número. */
+  --entrada: 220ms;
+  --paso: 380ms;
+  --traspaso: 1000ms;
+  --ronda: 5400ms;
+  --turno: calc(var(--ronda) / var(--piezas));
+  --reposo: 520ms;
+  --arranque-ronda: calc(
+    var(--entrada) + (var(--piezas) - 1) * var(--paso) + var(--traspaso) +
+      var(--reposo)
+  );
+}
+
+/* El nodo entra en su turno; la arista, medio turno después, que es lo
+   que hace que la luz viaje en vez de saltar. */
+.nodo {
+  --retardo: calc(var(--entrada) + var(--i) * var(--paso));
+  --pulso: calc(var(--arranque-ronda) + var(--i) * var(--turno));
+}
+
+.arista {
+  --retardo: calc(
+    var(--entrada) + var(--i) * var(--paso) + var(--paso) / 2
+  );
+  --pulso: calc(
+    var(--arranque-ronda) + var(--i) * var(--turno) + var(--turno) / 2
+  );
+}
+
+.herramienta {
+  --retardo: calc(var(--entrada) + var(--i) * var(--paso));
+  --pulso: calc(var(--arranque-ronda) + var(--i) * var(--turno));
+}
+
+.dibujo,
+.trama,
+.nombres {
+  position: absolute;
+  inset: 0;
+}
+
+.trama {
+  width: 100%;
+  height: 100%;
+}
+
+.nombres {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Todo el traspaso se deriva de --alza, igual que las otras tres marcas:
+   1 es sin resolver —lo opera Origen—, 0 es resuelto —lo opera tu
+   equipo—. Por eso el estado final es el que ya está escrito acá, que es
+   el que se ve sin JavaScript y el que queda bajo prefers-reduced-motion,
+   sin una sola regla aparte. El naranja de más abajo es el tránsito. */
+.arista {
+  stroke: color-mix(
+    in oklab,
+    var(--hueso) calc((1 - var(--alza)) * 100%),
+    var(--filete-color)
+  );
+  /* Seis aristas a hueso pleno arman una figura que le gana al titular de
+     la banda. A poco más de la mitad el hexágono se sostiene y el
+     conjunto queda al peso de las otras tres marcas. */
+  stroke-opacity: 0.55;
+  transition: stroke 520ms var(--salida) var(--retardo);
+}
+
+/* El nodo se apoya sobre tinta y no sobre la arista: la figura pasa por
+   detrás de la herramienta, no a través de ella. */
+.nodo {
+  position: absolute;
+  width: var(--nodo);
+  height: var(--nodo);
+  margin: calc(var(--nodo) / -2) 0 0 calc(var(--nodo) / -2);
+  display: grid;
+  place-items: center;
+  background-color: var(--tinta);
+  border: 1px solid
+    color-mix(
+      in oklab,
+      var(--hueso) calc((1 - var(--alza)) * 100%),
+      var(--violeta)
+    );
+  color: color-mix(
+    in oklab,
+    var(--hueso) calc((1 - var(--alza)) * 100%),
+    var(--violeta)
+  );
+  transition:
+    border-color 520ms var(--salida) var(--retardo),
+    color 520ms var(--salida) var(--retardo);
+}
+
+.nodo svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.herramienta {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 600;
+  font-stretch: 78%;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: color-mix(
+    in oklab,
+    var(--hueso-tenue) calc((1 - var(--alza)) * 100%),
+    var(--violeta)
+  );
+  transition: color 520ms var(--salida) var(--retardo);
+}
+
+/* Arriba y abajo el nombre se centra sobre su nodo y cuenta con todo el
+   ancho de la caja; a los costados se aparta hacia afuera y vive del
+   margen que sobra, que es poco. Las dos herramientas de nombre más
+   largo caen a las 12 y a las 6 por eso. */
+.herramienta[data-lado="arriba"] {
+  transform: translate(-50%, -100%);
+  margin-top: calc(var(--nodo) / -2 - 10px);
+  text-align: center;
+}
+
+.herramienta[data-lado="abajo"] {
+  transform: translateX(-50%);
+  margin-top: calc(var(--nodo) / 2 + 10px);
+  text-align: center;
+}
+
+.herramienta[data-lado="der"] {
+  transform: translateY(-50%);
+  margin-left: calc(var(--nodo) / 2 + 10px);
+  max-width: 108px;
+}
+
+.herramienta[data-lado="izq"] {
+  transform: translate(-100%, -50%);
+  margin-left: calc(var(--nodo) / -2 - 10px);
+  max-width: 108px;
+  text-align: right;
+}
+
+/* Quién queda a cargo. Es la única pieza de la marca que no cambia con
+   el traspaso: el destino estaba escrito desde el principio. */
+.centro {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* Lo más ancho que entra entre los dos nodos de los costados sin
+     tocarlos, a cualquier escala. Ver la nota de rx en Oferta.tsx. */
+  width: 26%;
+  margin: 0;
+  padding: 10px 6px;
+  display: grid;
+  gap: 3px;
+  background-color: var(--tinta-alta);
+  border: var(--filete);
+  text-align: center;
+}
+
+.centroDir {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--naranja);
+}
+
+.centroQuien {
+  font-size: 11.5px;
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--hueso);
+}
+
+.centroRotulo {
+  font-size: 9px;
+  font-weight: 600;
+  font-stretch: 78%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+}
+
+/* El frente naranja: la herramienta que está cambiando de manos ahora.
+   Va en animación y no en transición porque una transición no puede
+   pasar por un color en el medio, y el medio es justo el momento que
+   esta marca tiene para contar. El relleno `both` sostiene el estado sin
+   resolver durante la espera de cada pieza, así el frente avanza en vez
+   de encenderse todo junto.
+
+   Después entra la ronda, que es la segunda animación de la lista y por
+   eso manda sobre la primera. No tiene relleno, así que mientras espera
+   su turno no pinta nada y el traspaso sigue sosteniendo su estado
+   final; cuando arranca, su fotograma de partida es exactamente ese
+   estado, y no hay salto. Lo que la ronda pasea es una luz: el hueso de
+   abajo ya no vuelve a moverse nunca. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) .marca[data-llego] .arista {
+    animation:
+      traspasoArista var(--traspaso) var(--salida) var(--retardo) both,
+      rondaArista var(--ronda) linear var(--pulso) infinite;
+  }
+  :global(.js) .marca[data-llego] .nodo {
+    animation:
+      traspasoNodo var(--traspaso) var(--salida) var(--retardo) both,
+      rondaNodo var(--ronda) linear var(--pulso) infinite;
+  }
+  :global(.js) .marca[data-llego] .herramienta {
+    animation:
+      traspasoNombre var(--traspaso) var(--salida) var(--retardo) both,
+      rondaNombre var(--ronda) linear var(--pulso) infinite;
+  }
+
+  /* Fuera de pantalla no corre nada, igual que el campo de bytes y que
+     el encastre. La ronda es infinita: sin esto seguiría gastando
+     cuadros con la banda a tres pantallas de distancia. */
+  :global(.js) .marca:not([data-vivo]) .arista,
+  :global(.js) .marca:not([data-vivo]) .nodo,
+  :global(.js) .marca:not([data-vivo]) .herramienta {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes traspasoArista {
+  0% {
+    stroke: var(--filete-color);
+    stroke-opacity: 1;
+    animation-timing-function: linear;
+  }
+  42% {
+    stroke: var(--naranja);
+    stroke-opacity: 1;
+    animation-timing-function: var(--salida);
+  }
+  100% {
+    stroke: var(--hueso);
+    stroke-opacity: 0.55;
+  }
+}
+
+@keyframes traspasoNodo {
+  0% {
+    border-color: var(--violeta);
+    color: var(--violeta);
+    box-shadow: 0 0 0 0 rgba(212, 101, 58, 0);
+    animation-timing-function: linear;
+  }
+  42% {
+    border-color: var(--naranja);
+    color: var(--naranja);
+    box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+    animation-timing-function: var(--salida);
+  }
+  100% {
+    border-color: var(--hueso);
+    color: var(--hueso);
+    box-shadow: 0 0 0 4px rgba(212, 101, 58, 0);
+  }
+}
+
+@keyframes traspasoNombre {
+  0% {
+    color: var(--violeta);
+    animation-timing-function: linear;
+  }
+  42% {
+    color: var(--naranja);
+    animation-timing-function: var(--salida);
+  }
+  100% {
+    color: var(--hueso-tenue);
+  }
+}
+
+/* ---- La ronda ----
+
+   Una luz que da vueltas por el anillo ya entregado. Cada pieza está
+   encendida durante su turno —un sexto de la vuelta— y el fotograma de
+   partida y el de llegada son idénticos al estado final del traspaso,
+   así la ronda se monta encima sin mover nada de lugar.
+
+   El solape entre el que se apaga y el que se enciende es de propósito:
+   sin él la luz parpadea de a saltos en vez de viajar. Aun así hay una
+   sola pieza cerca del pico en cada instante.
+
+   El nombre es la excepción: no se va a naranja, sólo sube a hueso. El
+   naranja de esta marca significa cambiando de manos, y en la ronda ya
+   no cambia de manos nada; lo que la vuelta señala es qué está
+   corriendo ahora. */
+@keyframes rondaArista {
+  0%,
+  22%,
+  100% {
+    stroke: var(--hueso);
+    stroke-opacity: 0.55;
+  }
+  7% {
+    stroke: var(--naranja);
+    stroke-opacity: 1;
+  }
+}
+
+@keyframes rondaNodo {
+  0%,
+  22%,
+  100% {
+    border-color: var(--hueso);
+    color: var(--hueso);
+    box-shadow: 0 0 0 4px rgba(212, 101, 58, 0);
+  }
+  7% {
+    border-color: var(--naranja);
+    color: var(--naranja);
+    box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+  }
+}
+
+@keyframes rondaNombre {
+  0%,
+  22%,
+  100% {
+    color: var(--hueso-tenue);
+  }
+  7% {
+    color: var(--hueso);
+  }
+}
+
+/* ---------------- Cortes ---------------- */
+
+@media (max-width: 1100px) {
+  .banda {
+    gap: var(--s-5);
+    min-height: 38vh;
+    padding: var(--s-5) 0;
+  }
+  .marca {
+    max-width: 380px;
+  }
+  .campo {
+    --lado: 60px;
+  }
+  .bot {
+    --w: 280px;
+  }
+  .anillo {
+    --nodo: 32px;
+  }
+}
+
+/* A 340px de marca el teléfono caería en 32px de ancho, que ya no es un
+   teléfono sino una astilla. El reparto se rehace: el escritorio cede
+   cuatro puntos y el teléfono se queda con ellos, y el interior de las
+   tres baja un escalón de detalle. Mobile se diseña, no se reflowa —lo
+   pide el brief de la página y lo dice también esta marca. */
+@media (max-width: 900px) {
+  .trio {
+    --ancho-escritorio: 60%;
+    --ancho-tableta: 22%;
+    --ancho-telefono: 12%;
+    --claro: 3%;
+  }
+  /* --px ya achica el dibujo entero por igual; lo único que se corrige
+     acá es el grosor del más chico, que a esta altura necesita dibujarse
+     por encima de su escala para seguir leyéndose como un teléfono. */
+  .telefono {
+    --k: 0.44;
+  }
+}
+
+/* Una columna. El zigzag se apaga: colapsado deja el orden de lectura al
+   azar, así que la marca va siempre arriba del texto que explica. */
+@media (max-width: 900px) {
+  .banda {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-4);
+    min-height: 0;
+    padding: var(--s-5) 0;
+    justify-items: start;
+  }
+  /* El zigzag se apaga entero, no a medias: sin esto el `justify-self:
+     end` de la banda alternada le gana por especificidad al `start` de
+     abajo, y las marcas de la 02 y la 04 quedaban contra el borde
+     derecho mientras su texto arrancaba en el izquierdo. */
+  .banda[data-marca="der"] .marca {
+    order: 0;
+    justify-self: start;
+  }
+  .marca {
+    justify-self: start;
+    max-width: 340px;
+  }
+  .campo {
+    --lado: 52px;
+  }
+  .bot {
+    --w: 240px;
+  }
+  .anillo {
+    --nodo: 30px;
+  }
+  .detalle {
+    font-size: 16px;
+  }
+}
+
+/* El teléfono más angosto. El anillo no cambia de instrumento —el
+   hexágono comprimido en X deja a los nombres el margen que necesitan
+   incluso acá—, pero el nombre baja de cuerpo y afloja el tracking: a
+   340px de marca la diferencia entre entrar y no entrar son esos dos
+   ajustes. */
+@media (max-width: 560px) {
+  .anillo {
+    --nodo: 26px;
+  }
+  .herramienta {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    max-width: 84px;
+  }
+  .centro {
+    width: 24%;
+    padding: 8px 4px;
+  }
+  .centroQuien {
+    font-size: 9.5px;
+  }
+  .centroDir {
+    font-size: 9px;
+  }
+  .centroRotulo {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+  }
+}
+
+/* Sin movimiento las cuatro marcas quedan en su estado resuelto, no en
+   blanco ni a mitad de camino. El bot no sigue al mouse, no hace la
+   ronda y no parpadea: se queda despierto y mirando de frente, que es la
+   única pose que sigue diciendo lo mismo estando quieta. */
+@media (prefers-reduced-motion: reduce) {
+  .marca {
+    --alza: 0 !important;
+  }
+  .cubo,
+  .campo {
+    transition: none;
+  }
+  .parpado {
+    display: none;
+  }
+  /* El anillo se lee entero, con el traspaso ya cerrado: seis nombres en
+     hueso y ningún frente corriendo. Es la misma frase, dicha quieta. */
+  .arista,
+  .nodo,
+  .herramienta {
+    transition: none;
+    animation: none;
+  }
+}

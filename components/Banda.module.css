@@ -1,0 +1,74 @@
+/* Franja a todo el ancho y baja: sale del contenedor con max-width y
+   toca los dos bordes de la ventana, como la banda de Griffin. */
+/* Sin filetes, sin fondo propio y sin padding: los caracteres apoyan
+   directamente sobre el fondo de la página. El margen de arriba la
+   despega del hero; el de abajo la separa de la sección siguiente. */
+.banda {
+  width: 100%;
+  overflow: hidden;
+  margin: var(--s-5) 0 var(--s-6);
+  /* El campo se desvanece en los dos extremos: la banda no termina en un
+     corte seco, se disuelve en el fondo. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.campo {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas), 1fr);
+  gap: 3px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  padding: 0 var(--s-3);
+}
+
+.celda {
+  text-align: center;
+  transition: color 500ms var(--salida);
+}
+
+/* Izquierda: ruido. Centro: transición. Derecha: estructura asentada. */
+.celda[data-zona="ruido"] {
+  color: var(--byte);
+}
+
+.celda[data-zona="media"] {
+  color: color-mix(in srgb, var(--byte) 62%, var(--hueso-tenue));
+}
+
+.celda[data-zona="orden"] {
+  color: var(--hueso-tenue);
+  opacity: 0.82;
+}
+
+.celda[data-vivo] {
+  color: var(--byte-vivo);
+  transition-duration: 0ms;
+}
+
+@media (max-width: 900px) {
+  .banda {
+    margin: var(--s-4) 0 var(--s-5);
+  }
+  .campo {
+    font-size: 10px;
+    gap: 2px 0;
+    padding: 0 var(--s-2);
+  }
+}

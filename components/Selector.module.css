@@ -1,0 +1,73 @@
+.grupo {
+  display: grid;
+  border: var(--filete);
+}
+
+.opcion {
+  display: grid;
+  grid-template-columns: 16px 26px minmax(0, 1fr);
+  gap: var(--s-3);
+  align-items: center;
+  padding: var(--s-3) var(--s-4);
+  background: transparent;
+  border: 0;
+  border-bottom: var(--filete);
+  text-align: left;
+  cursor: pointer;
+  transition: background 260ms var(--salida);
+}
+
+.opcion:last-child {
+  border-bottom: 0;
+}
+
+.opcion:hover {
+  background: var(--tinta-capa);
+}
+
+.opcion[data-activo] {
+  background: var(--tinta-capa);
+}
+
+.punto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--violeta);
+  justify-self: center;
+  transition:
+    background 300ms var(--salida),
+    border-color 300ms var(--salida),
+    box-shadow 300ms var(--salida);
+}
+
+.opcion[data-activo] .punto {
+  background: var(--naranja);
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+}
+
+.n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--hueso-tenue);
+}
+
+.opcion[data-activo] .n {
+  color: var(--naranja);
+}
+
+.nombre {
+  font-stretch: 84%;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  transition: color 260ms var(--salida);
+}
+
+.opcion[data-activo] .nombre,
+.opcion:hover .nombre {
+  color: var(--hueso);
+}

@@ -1,0 +1,346 @@
+/* ------------------------------------------------------------------ *
+ * Lo construido — una banda por producto, con su placa montada encima.
+ *
+ * La composición es de dos planos que se pisan: una placa cuadrada a la
+ * izquierda y una ficha que arranca abajo de ella y sigue a la derecha.
+ * Las dos viven en la misma celda de grilla; lo único que las separa es
+ * el margen de la ficha y el z-index de la placa. Ese solape es lo que
+ * las hace leer como dos planos y no como dos cajas al lado.
+ * ------------------------------------------------------------------ */
+
+/* Las bandas no se estiran al ancho de la sección: el párrafo de una
+   unidad son tres renglones, y una ficha corrida hasta el borde deja el
+   texto nadando. El bloque entero —encabezado incluido— va centrado, y esa
+   parte se arma en Pagina.module.css con la misma medida que esta. */
+.bandas {
+  display: grid;
+  gap: var(--s-6);
+  max-width: 1180px;
+}
+
+.banda {
+  /* El lado de la placa manda toda la composición: el ancho de la primera
+     columna, cuánto se corre la ficha y cuánto alto mínimo tiene. */
+  --placa: clamp(210px, 30vw, 380px);
+  --solape: var(--s-5);
+
+  /* La entrada de los dos planos, cuánto viajan hacia el cruce, y cuánto
+     dura el naranja con que la placa se marca al llegar. */
+  --entrada: 640ms;
+  --viaje: 56px;
+  --marca: 900ms;
+
+  display: grid;
+  grid-template-columns: var(--placa) minmax(0, 1fr);
+  align-items: center;
+}
+
+/* ---------------- La ficha ---------------- */
+
+/* Tres franjas: cinta, texto, cinta. El relleno se fue a las partes —la
+   ficha no lo lleva— porque las cintas tienen que llegar hasta el borde:
+   un campo de bytes con margen deja de parecer algo que corre por debajo
+   y pasa a parecer un adorno centrado. */
+.tarjeta {
+  grid-area: 1 / 1 / 2 / 3;
+  margin-left: calc(var(--placa) - var(--solape));
+  border: var(--filete);
+  background: var(--tinta-alta);
+  min-height: calc(var(--placa) + var(--s-6));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* El texto arranca justo donde termina la placa, no donde termina el
+   solape: si entrara antes, la primera línea de cada párrafo quedaría
+   corriendo por debajo del mapa. Y el margen de la derecha repite el de la
+   izquierda: la referencia mete su bloque de texto una columna para
+   adentro por los dos lados, y ahí está la mitad de por qué se ve armada. */
+.texto {
+  padding: var(--s-4) calc(var(--solape) + var(--s-5));
+  display: grid;
+  align-content: center;
+  gap: var(--s-3);
+}
+
+.nombre {
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  font-stretch: 106%;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.estado {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  white-space: nowrap;
+}
+
+/* La prueba de la unidad: lo único de la banda que un tercero puede
+   chequear por su cuenta, así que es lo único que se queda en naranja
+   cuando la llegada termina y todo lo demás se apaga. */
+.dato {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--naranja);
+}
+
+.desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--hueso-tenue);
+  max-width: 64ch;
+}
+
+/* Una dirección se pone en mono y en minúscula, como todas las de esta
+   página. En versalitas apretadas dejaba de parecer una dirección y
+   pasaba a parecer un botón. Subrayado en violeta y naranja al pasar: se
+   hereda del global, acá sólo se fija el color de base. */
+.enlace {
+  justify-self: start;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--hueso);
+  text-decoration-line: underline;
+  transition: color 240ms var(--salida);
+}
+
+.enlace:hover {
+  color: var(--naranja);
+}
+
+/* Queda para una unidad que no tenga a dónde mandar. Hoy no la usa
+   ninguna: las tres tienen dirección publicable. */
+.reservado {
+  justify-self: start;
+  font-stretch: 80%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 4px var(--s-2);
+  color: var(--hueso-tenue);
+  border: 1px dashed var(--violeta);
+}
+
+/* ---------------- Las cintas ---------------- */
+
+/* Dos renglones de bytes arriba y dos abajo de cada ficha: la materia de
+   0x0000 —la región que nadie reservó— corriendo por encima y por debajo
+   de cada producto nuestro. Es lo que queda del mapa en esta sección, y a
+   diferencia del mapa no prueba nada; pero es literalmente lo que dice el
+   encabezado, y no afirma nada que no sea cierto.
+ *
+ * Se desvanece en las dos puntas y se recorta: un volcado de memoria no
+ * empieza ni termina, sigue. Sin el desvanecido se ve el corte, que es lo
+ * único que un campo de bytes no puede tener. */
+.cinta {
+  padding: var(--s-3) var(--s-4);
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+}
+
+/* El campo no tiene ancho intrínseco: sin esto se encoge al mínimo. */
+.cinta > * {
+  min-width: 0;
+}
+
+/* ---------------- La placa ---------------- */
+
+/* El lugar del logotipo. `tinta-capa` es el color de los planos de la
+   pila isométrica de la 02, así que el cuadrado sigue siendo material de
+   esta página y no una caja vacía cualquiera; el filete de canto abajo es
+   el que allá hace que una capa sin asignar siga siendo un estrato.
+ *
+ * El marco es de 3px y no el filete de 1px que divide todo lo demás. Es
+ * la única excepción de la página y está puesta a propósito: la placa no
+ * divide nada, es la pieza que se apoya encima, y con el filete —`#2E2940`
+ * sobre `#15131E`, dos valores casi iguales— no se despegaba del fondo. Va
+ * en `hueso-tenue` y no en hueso puro porque lo que va a ocupar ese
+ * cuadrado es una marca, y el marco no puede pesar más que ella. */
+.placa {
+  grid-area: 1 / 1 / 2 / 2;
+  z-index: 1;
+  width: var(--placa);
+  aspect-ratio: 1;
+  border: 3px solid var(--hueso-tenue);
+  background: var(--tinta-capa);
+  box-shadow: 0 1px 0 rgba(95, 88, 112, 0.5);
+  display: grid;
+  place-items: center;
+  padding: var(--s-4);
+}
+
+/* Las iniciales son un hueco con la forma de una marca, no un reemplazo:
+   van en `hueso-tenue` y no en hueso, que es el color de lo que sí está.
+   El día que exista el logotipo se reemplaza el contenido de la placa y
+   no se toca nada más. */
+.iniciales {
+  font-size: clamp(56px, 10vw, 96px);
+  font-weight: 700;
+  font-stretch: 119%;
+  letter-spacing: -0.032em;
+  line-height: 1;
+  color: var(--hueso-tenue);
+  user-select: none;
+}
+
+/* El borde de la placa se marca en naranja cuando su banda llega, igual
+   que el plano activo de la pila de la 02: una sola cosa viva por vez.
+   Después vuelve al hueso y no queda ningún acento en reposo salvo el
+   dato, que es una prueba y no un adorno. */
+.banda[data-llegada] .placa {
+  animation: canto var(--marca) var(--salida) 260ms forwards;
+}
+
+@keyframes canto {
+  0% {
+    border-color: var(--hueso-tenue);
+    box-shadow: 0 1px 0 rgba(95, 88, 112, 0.5);
+  }
+  16% {
+    border-color: var(--naranja);
+    box-shadow: 0 1px 0 rgba(212, 101, 58, 0.6);
+  }
+  48% {
+    border-color: var(--naranja);
+    box-shadow: 0 1px 0 rgba(212, 101, 58, 0.6);
+  }
+  100% {
+    border-color: var(--hueso-tenue);
+    box-shadow: 0 1px 0 rgba(95, 88, 112, 0.5);
+  }
+}
+
+/* ---------------- La entrada ---------------- */
+
+/* Los dos planos entran cruzándose: la placa desde la izquierda y la
+   ficha desde la derecha, hacia el lugar donde se pisan. El movimiento es
+   el montaje mismo —dos piezas que se juntan— y no un fundido genérico
+   aplicado a una caja.
+ *
+ * La placa sale medio paso después. Entrando juntas, el solape no se ve
+ * producirse: las dos ya están superpuestas todo el trayecto. Con la
+ * ficha primero, la placa se apoya arriba al final del recorrido y ahí
+ * queda clara cuál está encima de cuál. */
+.tarjeta,
+.placa {
+  transition:
+    opacity var(--entrada) var(--salida),
+    transform var(--entrada) var(--salida);
+}
+
+.placa {
+  transition-delay: 120ms;
+}
+
+/* El escondite vive detrás de .js, como todo el resto de la página: sin
+   JavaScript, sin hidratar, o si el observer nunca dispara, la banda está
+   entera y en su lugar. */
+:global(.js) .banda:not([data-llegada]) .tarjeta {
+  opacity: 0;
+  transform: translateX(var(--viaje));
+}
+
+:global(.js) .banda:not([data-llegada]) .placa {
+  opacity: 0;
+  transform: translateX(calc(-1 * var(--viaje)));
+}
+
+/* ---------------- Pantalla angosta ---------------- */
+
+/* La composición no se aprieta: gira. La placa pasa arriba y la ficha
+   abajo, con el mismo solape pero en vertical, así el gesto de los dos
+   planos pisándose sobrevive en el teléfono. */
+@media (max-width: 900px) {
+  .bandas {
+    gap: var(--s-5);
+  }
+
+  /* La placa se queda más angosta que la ficha a propósito. Del mismo
+     ancho, las dos cajas apiladas se leen como una sola partida al medio
+     y el solape —que es toda la composición— desaparece. */
+  .banda {
+    --placa: min(86%, 320px);
+    --solape: var(--s-4);
+    /* Viaje más corto: en una pantalla angosta, 56px son casi un sexto
+       del ancho y la entrada se lee como un salto. */
+    --viaje: 28px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .placa {
+    grid-area: 1 / 1 / 2 / 2;
+    justify-self: start;
+  }
+
+  .tarjeta {
+    grid-area: 2 / 1 / 3 / 2;
+    margin-left: 0;
+    margin-top: calc(-1 * var(--solape));
+    min-height: 0;
+  }
+
+  /* La cinta de arriba pasa por debajo de la placa, que la tapa. Se
+     empuja el texto en su lugar: el relleno de arriba reemplaza a la
+     cinta escondida, así el primer renglón no queda pegado al solape. */
+  .tarjeta > .cinta:first-child {
+    padding-top: calc(var(--solape) + var(--s-2));
+  }
+
+  .texto {
+    padding: var(--s-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .banda {
+    --placa: min(92%, 300px);
+  }
+
+  .cinta {
+    padding-left: var(--s-3);
+    padding-right: var(--s-3);
+  }
+
+  .placa {
+    padding: var(--s-3);
+  }
+}
+
+/* ---------------- Movimiento reducido ---------------- */
+
+/* Quien no puede depender del scroll no puede quedarse sin la sección:
+   sin movimiento, cada banda está entera, en su lugar y en reposo. */
+@media (prefers-reduced-motion: reduce) {
+  :global(.js) .banda:not([data-nunca]) .tarjeta,
+  :global(.js) .banda:not([data-nunca]) .placa {
+    opacity: 1;
+    transform: none;
+  }
+
+  .banda[data-llegada] .placa {
+    animation: none;
+  }
+}

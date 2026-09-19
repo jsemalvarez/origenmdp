@@ -1,0 +1,170 @@
+.campo {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas), 1fr);
+  gap: 3px 7px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* Campo que se recorta en vez de encimarse.
+ *
+ * Con pistas `1fr` el ancho lo manda el contenedor, y adentro de una
+ * celda angosta la pista cae abajo del ancho de dos dígitos: los bytes se
+ * montan unos sobre otros y el campo deja de leerse como un campo. Donde
+ * el ancho lo manda la columna y no el campo —la matriz de la 04— la
+ * celda lleva un mínimo y el campo sigue de largo abajo del borde, que es
+ * lo que un volcado de memoria hace de todas formas. Quien lo use tiene
+ * que recortar y desvanecer el borde; si no, se ve el corte. */
+.campo[data-ajusta] {
+  grid-template-columns: repeat(var(--columnas), minmax(2.15em, 1fr));
+}
+
+.celda {
+  color: var(--byte);
+  text-align: center;
+  transition: color 420ms var(--salida);
+}
+
+/* El byte que acaba de cambiar queda encendido tres ticks y se apaga. */
+.celda[data-vivo] {
+  color: var(--byte-vivo);
+  transition-duration: 0ms;
+}
+
+/* ---- Flujo: carriles con nodos ---- */
+
+.flujo {
+  display: grid;
+  gap: 11px;
+  padding: 3px 0;
+}
+
+.carril {
+  position: relative;
+  height: 9px;
+}
+
+.via {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--violeta);
+  opacity: 0.55;
+  transition: background 520ms var(--salida);
+}
+
+.via[data-activa] {
+  background: var(--hueso-tenue);
+}
+
+.nodo {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--violeta);
+  transition: background 520ms var(--salida);
+}
+
+.nodo[data-activa] {
+  background: var(--hueso);
+}
+
+/* El nodo con revisión humana se marca: es la promesa de la región. */
+.nodo[data-revisa] {
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: transparent;
+  border: 1.5px solid var(--violeta);
+  transform: rotate(45deg);
+}
+
+.nodo[data-revisa][data-activa] {
+  border-color: var(--naranja);
+}
+
+/* ---- Celdas: unidades a cargo ---- */
+
+.celdas {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas), 1fr);
+  gap: 4px;
+  padding: 3px 0;
+}
+
+.unidad {
+  aspect-ratio: 1;
+  border: 1px solid var(--violeta);
+  opacity: 0.5;
+  transition:
+    background 520ms var(--salida),
+    opacity 520ms var(--salida),
+    border-color 520ms var(--salida);
+}
+
+.unidad[data-on] {
+  background: var(--violeta);
+  opacity: 0.75;
+}
+
+.unidad[data-activa] {
+  border-color: var(--hueso-tenue);
+  opacity: 0.8;
+}
+
+.unidad[data-on][data-activa] {
+  background: var(--hueso);
+  border-color: var(--hueso);
+  opacity: 0.9;
+}
+
+.bloques {
+  display: grid;
+  gap: 7px;
+  padding: 2px 0;
+}
+
+.filaBloque {
+  display: flex;
+  height: 7px;
+}
+
+.bloque {
+  height: 100%;
+  background: var(--violeta);
+  opacity: 0.88;
+  transition:
+    background 520ms var(--salida),
+    opacity 520ms var(--salida);
+}
+
+.bloque[data-activa] {
+  background: var(--hueso);
+  opacity: 0.9;
+}
+
+/* Reservado: el bloque ocupa su lugar y no está lleno. Punteado naranja,
+   la misma marca que llevan el enlace que falta y el hito que todavía no
+   pasó; con el mismo ancho que tendría lleno, así la diferencia entre
+   reservado y asignado se lee sin leer ningún rótulo. */
+.bloque[data-reservada],
+.bloque[data-reservada][data-activa] {
+  background: transparent;
+  border: 1px dashed var(--naranja);
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .campo {
+    font-size: 10px;
+    gap: 2px 4px;
+  }
+}

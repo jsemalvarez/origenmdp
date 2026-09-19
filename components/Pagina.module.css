@@ -1,0 +1,750 @@
+.pagina {
+  min-height: 100vh;
+}
+
+/* La barra es fija: los anclajes tienen que frenar debajo de ella. */
+.portada,
+.regiones,
+.propios,
+.cotizar {
+  scroll-margin-top: calc(var(--cabecera) + var(--s-3));
+}
+
+/* ---------------- Barra ---------------- */
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: var(--cabecera);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: 0 var(--s-5);
+  background: rgba(21, 19, 30, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: var(--filete);
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-1);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--hueso);
+  white-space: nowrap;
+}
+
+/* Cada mitad del lockup es indivisible: la marca no se parte nunca. */
+.lockupParte {
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  gap: var(--s-4);
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-1);
+  font-stretch: 76%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: var(--s-1) 0;
+  border-bottom: 1px solid transparent;
+  transition: color 240ms var(--salida);
+}
+
+.nav a:hover {
+  color: var(--naranja);
+  border-bottom-color: var(--naranja);
+}
+
+.navN {
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.barraWa {
+  font-stretch: 78%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ---------------- 01 · Portada ---------------- */
+
+/* La portada es una sola columna: la pila se fue a la sección 02 y en su
+   lugar, al pie, va la banda a todo el ancho. */
+/* El pie corto es deliberado: la banda tiene que asomar dentro de la
+   primera pantalla. Si no se ve moverse al entrar, no cumple su trabajo. */
+.portada {
+  display: grid;
+  align-items: center;
+  padding: var(--s-5) var(--s-5) var(--s-4);
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.portadaTexto {
+  display: grid;
+  gap: var(--s-3);
+  align-content: center;
+  max-width: 44rem;
+}
+
+/* Acotado para que la acción entre en la primera pantalla a 1440, y
+   abierto sobre el eje de ancho: si el mundo se construye sobre ese eje,
+   tiene que verse a escala de titular, no sólo en los rótulos. */
+.titular {
+  font-size: clamp(32px, 3.3vw, 48px);
+  line-height: 1.04;
+  font-weight: 700;
+  font-stretch: 119%;
+  letter-spacing: -0.032em;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.bajada {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--hueso-tenue);
+  max-width: 46ch;
+}
+
+.pruebaCaja {
+  border-left: 1px solid var(--naranja);
+  padding-left: var(--s-4);
+  margin-top: var(--s-2);
+}
+
+.prueba {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--naranja-claro);
+  max-width: 42ch;
+}
+
+/* Índice 01–04 */
+
+.indice {
+  margin-top: var(--s-3);
+  border-top: var(--filete);
+}
+
+.indiceLista {
+  display: grid;
+}
+
+.indiceFila {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 16px 26px minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  align-items: center;
+  padding: var(--s-2) 0;
+  background: transparent;
+  border: 0;
+  border-bottom: var(--filete);
+  text-align: left;
+  cursor: pointer;
+  transition: color 260ms var(--salida);
+}
+
+.indicePunto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--violeta);
+  justify-self: center;
+  transition:
+    background 300ms var(--salida),
+    border-color 300ms var(--salida),
+    box-shadow 300ms var(--salida);
+}
+
+.indiceFila[data-activa] .indicePunto {
+  background: var(--naranja);
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+}
+
+.indiceN {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--hueso-tenue);
+}
+
+/* El nombre de la región es la oferta: tiene que leerse como tal. */
+.indiceNombre {
+  font-stretch: 88%;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+  transition: color 260ms var(--salida);
+}
+
+.indiceFila[data-activa] .indiceNombre,
+.indiceFila[data-activa] .indiceN {
+  color: var(--hueso);
+}
+
+.indiceDir {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--hueso-tenue);
+}
+
+.indiceFila[data-activa] .indiceDir {
+  color: var(--naranja);
+}
+
+.indiceFila:hover .indiceNombre {
+  color: var(--hueso);
+}
+
+/* Acciones */
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  margin-top: var(--s-3);
+}
+
+.accionPrimaria {
+  background: var(--naranja);
+  color: var(--tinta-honda);
+  padding: var(--s-3) var(--s-5);
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 106%;
+  text-decoration: none;
+  transition:
+    transform 260ms var(--salida),
+    box-shadow 260ms var(--salida),
+    background 260ms var(--salida);
+  box-shadow: 0 10px 26px -12px rgba(212, 101, 58, 0.9);
+}
+
+.accionPrimaria:hover {
+  background: var(--naranja-claro);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px -14px rgba(212, 101, 58, 0.95);
+}
+
+.accionSecundaria {
+  font-stretch: 78%;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+}
+
+.accionSecundaria:hover {
+  color: var(--naranja);
+}
+
+.mapaAngosto {
+  display: none;
+}
+
+/* ---------------- 02 · Regiones ---------------- */
+
+/* Sin `align-items: start`: la celda del mapa tiene que medir lo mismo
+   que la columna de texto. Con la celda corta, el sticky sólo se pegaba
+   mientras duraba el primer bloque y después la pila se iba con él. */
+.regiones {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-6);
+  /* El sobrante de abajo es lo que le da recorrido al sticky: sin él la
+     pila se despega antes de que termine de leerse la última región. */
+  padding: 0 var(--s-5) 34vh;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.regionesTexto {
+  display: grid;
+}
+
+.bloqueRegion {
+  min-height: 82vh;
+  display: grid;
+  gap: var(--s-3);
+  align-content: center;
+  max-width: 34rem;
+  padding: var(--s-6) 0;
+  opacity: 0.34;
+  transition: opacity 620ms var(--salida);
+}
+
+.bloqueRegion[data-activa] {
+  opacity: 1;
+}
+
+.bloqueMeta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.bloqueN {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--naranja);
+}
+
+.bloqueDir {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--hueso-tenue);
+}
+
+.bloqueTitulo {
+  font-size: clamp(26px, 2.9vw, 40px);
+  line-height: 1.1;
+  font-weight: 700;
+  font-stretch: 106%;
+  letter-spacing: -0.026em;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.bloqueNombre {
+  font-stretch: 86%;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--naranja);
+}
+
+.bloqueDetalle {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--hueso-tenue);
+  max-width: 52ch;
+}
+
+.bloqueLista {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+  border-top: var(--filete);
+  padding-top: var(--s-3);
+}
+
+.bloqueLista li {
+  position: relative;
+  padding-left: var(--s-4);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--hueso-tenue);
+}
+
+.bloqueLista li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 11px;
+  height: 1px;
+  background: var(--violeta);
+}
+
+.bloqueRegion[data-activa] .bloqueLista li::before {
+  background: var(--naranja);
+}
+
+/* Capa latente: la segunda lectura, a pedido */
+
+.latenteBoton {
+  justify-self: start;
+  margin-top: var(--s-2);
+  background: transparent;
+  border: var(--filete);
+  color: var(--hueso-tenue);
+  padding: var(--s-2) var(--s-3);
+  font-stretch: 80%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 240ms var(--salida),
+    color 240ms var(--salida);
+}
+
+.latenteBoton:hover {
+  border-color: var(--naranja);
+  color: var(--naranja);
+}
+
+.latenteTexto {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--hueso);
+  border-left: 1px solid var(--naranja);
+  padding-left: var(--s-3);
+  max-width: 48ch;
+}
+
+.regionesMapa {
+  min-width: 0;
+}
+
+/* La pila queda quieta y centrada en la ventana mientras el texto pasa
+   por al lado. No cambia de sección: es un solo componente. */
+.pegajoso {
+  position: sticky;
+  top: var(--cabecera);
+  height: calc(100vh - var(--cabecera));
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: center;
+  gap: var(--s-3);
+  padding: var(--s-4) 0;
+}
+
+.pieMapa {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  justify-content: center;
+  font-stretch: 78%;
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+}
+
+.pieDir {
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--naranja);
+}
+
+/* ---------------- 03 · Qué contratás ---------------- */
+
+/* Lo que el mercado ofrece y no resuelve.
+
+   Sin usar desde el 2026-09-18: el markup está comentado al final de
+   la sección 03 en Pagina.tsx. Los estilos se dejan en pie para que
+   devolverlo sea un solo paso y no tres. Si la sección termina de
+   caerse, esto se borra con ella, incluida la línea de .contra en el
+   corte de 900px. */
+
+.contra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: var(--s-5);
+  margin-top: var(--s-4);
+}
+
+.contraItem {
+  display: grid;
+  gap: var(--s-2);
+  align-content: start;
+  border-left: 1px solid var(--violeta);
+  padding-left: var(--s-4);
+}
+
+.contraRotulo {
+  font-stretch: 76%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+}
+
+.contraProblema {
+  font-size: 20px;
+  font-weight: 700;
+  font-stretch: 104%;
+  letter-spacing: -0.016em;
+  line-height: 1.2;
+  color: var(--hueso);
+}
+
+.contraDetalle {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--hueso-tenue);
+  max-width: 46ch;
+}
+
+/* ---------------- 04 · Lo construido ---------------- */
+
+.oferta,
+.propios,
+.cotizar {
+  padding: var(--s-8) var(--s-5);
+  max-width: 1500px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--s-6);
+}
+
+.encabezado {
+  display: grid;
+  gap: var(--s-3);
+  max-width: 62ch;
+}
+
+/* El encabezado y las bandas de la 04, como un solo bloque centrado.
+   La medida es la de las bandas —1180— y tiene que seguir siendo la misma
+   que la de Construido.module.css: si se separan, el título deja de estar
+   en escuadra con las placas, que es lo único que este envoltorio existe
+   para garantizar. Es la única sección de la página que no arranca contra
+   el borde izquierdo, y es a pedido: la composición de placa y ficha se
+   lee como un objeto armado y pide estar centrada, no colgada de un
+   costado. */
+.bloqueUnidades {
+  display: grid;
+  gap: var(--s-6);
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.tituloSeccion {
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1.08;
+  font-weight: 700;
+  font-stretch: 106%;
+  letter-spacing: -0.028em;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.textoSeccion {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--hueso-tenue);
+  max-width: 58ch;
+}
+
+/* Las unidades propias ya no son una grilla de tarjetas: son un solo mapa
+   con las tres asignadas encima, y toda la pieza —incluida su versión de
+   pantalla angosta— vive en Construido.module.css. Lo que quedaba acá
+   (.unidades, .unidad*, .pendiente, .reservado) se fue con ellas el
+   2026-09-18; el rótulo punteado de lo reservado sobrevive allá, que es
+   el único de los tres que decía algo. */
+
+/* Trabajo de comunidad: el cromo de la subsección. La línea en sí, con
+   su canaleta de años y su tramo sin asignar, vive en Comunidad.module.css
+   —es una pieza con identidad propia y no un listado más de esta hoja. */
+
+/* Trabajo de comunidad: acá queda sólo el filete y el aire que lo separan
+   de las unidades. Toda la escena —el encabezado quieto, la línea y las
+   fichas que pasan— vive en Comunidad.module.css, porque es una pieza con
+   identidad propia y no un listado más de esta hoja. */
+
+.comunidad {
+  margin-top: var(--s-6);
+  padding-top: var(--s-6);
+  border-top: var(--filete);
+}
+
+/* ---------------- 04 · Cotizar ---------------- */
+
+.cajaFormulario {
+  border: var(--filete);
+  background: var(--tinta-alta);
+  padding: var(--s-6);
+  max-width: 900px;
+}
+
+/* ---------------- Pie ---------------- */
+
+.pie {
+  border-top: var(--filete);
+  padding: var(--s-6) var(--s-5) var(--s-7);
+  max-width: 1500px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--s-2);
+}
+
+.pieLockup {
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--hueso);
+}
+
+.pieLinea {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--hueso-tenue);
+}
+
+.piePendiente {
+  margin-top: var(--s-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--naranja);
+  max-width: 56ch;
+}
+
+/* Sin scroll no hay activación: nada puede quedar apagado. */
+@media (prefers-reduced-motion: reduce) {
+  .bloqueRegion {
+    opacity: 1;
+  }
+}
+
+/* ---------------- Adaptación ---------------- */
+
+@media (max-width: 1100px) {
+  .portada,
+  .regiones {
+    gap: var(--s-5);
+  }
+  .bloqueRegion {
+    min-height: 74vh;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .barra {
+    padding: 0 var(--s-4);
+    gap: var(--s-3);
+  }
+
+  .nav {
+    justify-content: flex-end;
+  }
+
+  .navNombre {
+    display: none;
+  }
+
+  .navN {
+    font-size: 11px;
+  }
+
+  .barraWa {
+    display: none;
+  }
+
+  /* La pila 3D no entra en un teléfono: manda el mapa plano. */
+  .mapaAngosto {
+    display: block;
+    margin-bottom: var(--s-5);
+  }
+
+  .portada {
+    min-height: 0;
+    padding: var(--s-6) var(--s-4) var(--s-6);
+  }
+
+  .portadaTexto {
+    max-width: none;
+  }
+
+  .titular {
+    font-size: clamp(30px, 8.4vw, 42px);
+  }
+
+  .regiones {
+    grid-template-columns: 1fr;
+    padding: 0 var(--s-4);
+  }
+
+  /* Sin pila fija al costado, cada bloque se lee entero y seguido. */
+  .regionesMapa {
+    display: none;
+  }
+
+  .bloqueRegion {
+    min-height: 0;
+    padding: var(--s-5) 0;
+    opacity: 1;
+    border-bottom: var(--filete);
+    max-width: none;
+  }
+
+  .oferta,
+  .propios,
+  .cotizar {
+    padding: var(--s-6) var(--s-4);
+    gap: var(--s-5);
+  }
+
+  .contra {
+    grid-template-columns: 1fr;
+  }
+
+  .cajaFormulario {
+    padding: var(--s-4);
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .accionPrimaria,
+  .accionSecundaria {
+    text-align: center;
+  }
+
+  .pie {
+    padding: var(--s-5) var(--s-4) var(--s-6);
+  }
+}
+
+@media (max-width: 560px) {
+  .lockup {
+    font-size: 11.5px;
+    font-stretch: 86%;
+  }
+  .nav {
+    gap: var(--s-3);
+  }
+}

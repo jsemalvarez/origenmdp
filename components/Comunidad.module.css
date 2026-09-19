@@ -1,0 +1,493 @@
+/* ---------- Trabajo de comunidad: la línea quieta y las fichas ---------- */
+
+/* Dos columnas, igual que la 02: lo quieto a la izquierda, lo que pasa a
+   la derecha. La izquierda es angosta a propósito —una lista de renglones
+   no necesita ancho— y la derecha se lleva el resto, que es donde hay
+   texto para leer. */
+.escena {
+  display: grid;
+  grid-template-columns: minmax(0, 40fr) minmax(0, 56fr);
+  gap: var(--s-6);
+}
+
+.ladoLinea {
+  min-width: 0;
+}
+
+/* Se queda quieto mientras las fichas pasan al lado, anclado bajo la barra.
+
+   Sin alto propio, a diferencia de la pila de la 02. Con la altura de la
+   ventana el bloque se queda sin recorrido: se suelta antes de que la
+   última ficha termine de leerse y el encabezado se va cortado bajo la
+   barra, y en una notebook de 650px de alto podría cortarse siempre. Con
+   su alto natural el anclaje dura hasta el final y el encabezado no se
+   parte nunca. */
+.quieto {
+  position: sticky;
+  top: calc(var(--cabecera) + var(--s-4));
+  display: grid;
+  align-content: start;
+  gap: var(--s-5);
+}
+
+/* ---- El encabezado ---- */
+
+.intro {
+  display: grid;
+  gap: var(--s-2);
+  max-width: 34rem;
+}
+
+/* El escalón de título, no el de headline: esto se anuncia como un
+   movimiento de la 04 y no compite con el encabezado de la sección. */
+.introTitulo {
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.12;
+  font-weight: 700;
+  font-stretch: 106%;
+  letter-spacing: -0.02em;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+
+.introTexto {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--hueso-tenue);
+  max-width: 46ch;
+}
+
+/* ---- La línea ---- */
+
+/* Tres medidas y todo lo demás sale de ellas: la canaleta de años, el
+   claro hasta el carril y el nodo. El carril y su línea se derivan acá
+   mismo, así que si la canaleta cambia en un corte la línea sigue cayendo
+   donde tiene que caer. */
+.hitos {
+  --canaleta: 44px;
+  --claro: var(--s-3);
+  --nodo: 9px;
+  --separacion: var(--s-2);
+
+  display: grid;
+  gap: var(--separacion);
+}
+
+/* La grilla va en el botón y no en el <li>: así la fila entera es el área
+   de click sin necesidad de subgrid, y el corte y la cola —que no son
+   botones— la repiten en su propia caja. Las tres medidas se heredan de
+   .hitos, así que la columna es la misma en los tres casos. */
+.filaBoton,
+.hoy,
+.cola {
+  display: grid;
+  grid-template-columns: var(--canaleta) var(--nodo) minmax(0, 1fr);
+  column-gap: var(--claro);
+  align-items: stretch;
+}
+
+.filaBoton {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ---- La canaleta ---- */
+
+.anio {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--hueso-tenue);
+  text-align: right;
+  align-self: center;
+  transition: color 300ms var(--salida);
+}
+
+/* Una sola entrada viva por vez, en naranja, en todos los lugares donde
+   aparece: es la ley de la página y acá se cumple en el año, el nodo y el
+   nombre a la vez. */
+.fila[data-activa] .anio {
+  color: var(--naranja);
+}
+
+/* ---- El carril: la línea y el nodo ---- */
+
+/* El carril estira al alto de su fila y su línea sigue de largo hasta la
+   siguiente, así el trazo baja continuo aunque las filas estén separadas. */
+.carril {
+  position: relative;
+  min-height: 26px;
+}
+
+.carril::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: calc(-1 * var(--separacion));
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--filete-color);
+  transform-origin: top center;
+  transition: transform 700ms var(--salida) var(--retardo, 0ms);
+}
+
+.carril::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--nodo);
+  height: var(--nodo);
+  margin-top: calc(var(--nodo) / -2);
+  background: transparent;
+  border: 1px solid var(--violeta);
+  transition:
+    background 300ms var(--salida),
+    border-color 300ms var(--salida),
+    box-shadow 300ms var(--salida),
+    transform 460ms var(--salida) calc(var(--retardo, 0ms) + 200ms);
+}
+
+/* El escondite vive detrás de .js, igual que el resto de la página: sin
+   JavaScript, sin hidratar, o si el observer nunca dispara, la línea está
+   dibujada entera y no falta nada. */
+:global(.js) .escena:not([data-visible]) .carril::before {
+  transform: scaleY(0);
+}
+
+:global(.js) .escena:not([data-visible]) .carril::after {
+  transform: scale(0);
+}
+
+/* Algunos hitos son un momento y otros un tramo. Un hackathon dura un fin
+   de semana y se dibuja como punto; un sistema que estuvo cinco años en
+   producción se dibuja como barra, de arriba abajo de su fila. Es la misma
+   pieza con otra altura y no una figura nueva. La barra encierra el tramo,
+   no lo mide: los años de la ficha son los que dicen cuánto duró. */
+.esTramo .carril::after {
+  top: 3px;
+  bottom: 3px;
+  height: auto;
+  margin-top: 0;
+  transform-origin: top center;
+}
+
+/* Reservado: punteado, la misma notación que la captura que falta y el
+   enlace que no está. */
+.esReservado .carril::after {
+  border-style: dashed;
+  border-color: var(--naranja);
+}
+
+/* La entrada viva: naranja con su halo de 4px, el mismo de los puntos de
+   estado del índice de portada. Lo reservado conserva su punteado y sólo
+   se le suma el halo, porque seguir reservado no deja de ser cierto
+   cuando el visitante lo está mirando. */
+.fila[data-activa] .carril::after {
+  background: var(--naranja);
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 4px rgba(212, 101, 58, 0.18);
+}
+
+.esReservado[data-activa] .carril::after {
+  background: transparent;
+}
+
+/* De `hoy` para abajo el carril deja de ser un trazo y pasa a ser una
+   intención: punteado y en violeta, el color de lo que todavía no está
+   asignado en toda la página. */
+.hoy .carril::before,
+.esReservado .carril::before,
+.cola .carril::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--violeta) 0 4px,
+    transparent 4px 9px
+  );
+}
+
+/* El corte no es un hito: no lleva nodo, lleva una marca que cruza. */
+.hoy .carril::after {
+  top: 50%;
+  left: calc(var(--nodo) / -2);
+  width: calc(var(--nodo) * 2);
+  height: 1px;
+  margin-top: 0;
+  background: var(--hueso-tenue);
+  border: 0;
+  box-shadow: none;
+}
+
+.cola .carril::before {
+  /* La última: la línea no se pasa de largo, se desvanece con la cola. El
+     #000 de las máscaras no es un color del sistema: de una máscara sólo
+     se lee el canal alfa, así que ahí #000 quiere decir "opaco". */
+  bottom: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+}
+
+.cola .carril::after {
+  display: none;
+}
+
+/* ---- El nombre ---- */
+
+.nombre {
+  align-self: center;
+  font-size: 15px;
+  font-weight: 600;
+  font-stretch: 94%;
+  letter-spacing: -0.008em;
+  line-height: 1.25;
+  color: var(--hueso-tenue);
+  transition: color 300ms var(--salida);
+}
+
+.fila[data-activa] .nombre,
+.filaBoton:hover .nombre {
+  color: var(--hueso);
+}
+
+/* ---- El corte y la cola ---- */
+
+.hoy {
+  align-items: center;
+}
+
+.corte {
+  align-self: center;
+  font-stretch: 76%;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violeta);
+}
+
+.bytes {
+  display: block;
+  max-width: 240px;
+  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+}
+
+/* ---- Las fichas ---- */
+
+/* El aire de abajo no es decorativo: es el que mantiene anclada la columna
+   de la izquierda hasta que la última ficha terminó de pasar. Sin él la
+   escena se corta justo en el borde inferior de la última y el encabezado
+   se suelta un renglón antes de tiempo. */
+.ladoFichas {
+  display: grid;
+  min-width: 0;
+  padding-bottom: 14vh;
+}
+
+/* Cada ficha se lleva su pantalla: es lo que le da recorrido al scroll y
+   lo que separa un cambio del siguiente. La que cruza el medio queda
+   entera y las vecinas se atenúan, que es el cruce de fundidos. */
+/* 45vh y no más: seis fichas es todo el recorrido, y a 62vh el bloque se
+   iba a 3,7 pantallas —más largo que la 02, que es el plato fuerte de la
+   página—. A 45 son 2,7 y el cambio de ficha sigue cayendo entero. */
+.bloqueFicha {
+  min-height: 45vh;
+  display: grid;
+  align-content: center;
+  padding: var(--s-4) 0;
+  opacity: 0.22;
+  transition: opacity 620ms var(--salida);
+}
+
+.bloqueFicha[data-activa] {
+  opacity: 1;
+}
+
+.ficha {
+  display: grid;
+  gap: var(--s-2);
+  border: var(--filete);
+  background: var(--tinta-alta);
+  padding: var(--s-5);
+  max-width: 46rem;
+  transition: border-color 420ms var(--salida);
+}
+
+.bloqueFicha[data-activa] .ficha {
+  border-color: var(--violeta);
+}
+
+.fichaMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-3);
+}
+
+.fichaAnio {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--naranja);
+}
+
+/* El puesto lo dio un jurado y el estado lo decimos nosotros: el primero
+   en hueso porque está entregado, el segundo en tenue porque no es un
+   logro sino una situación. El naranja de esta sección es de lo vivo y de
+   lo reservado; no se gasta en un premio que ya está cerrado. */
+.fichaPuesto,
+.fichaEstado {
+  font-stretch: 82%;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.fichaPuesto {
+  color: var(--hueso);
+}
+
+.fichaEstado {
+  color: var(--hueso-tenue);
+}
+
+.fichaTitulo {
+  font-size: clamp(20px, 1.9vw, 24px);
+  font-weight: 700;
+  font-stretch: 104%;
+  letter-spacing: -0.018em;
+  line-height: 1.16;
+  color: var(--hueso);
+}
+
+.fichaOrganiza {
+  font-stretch: 78%;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hueso-tenue);
+}
+
+.fichaCifras {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--hueso-tenue);
+  margin-top: var(--s-1);
+}
+
+.fichaDetalle {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--hueso-tenue);
+  max-width: 54ch;
+  margin-top: var(--s-1);
+}
+
+/* El pie de la ficha: a dónde se puede ir a chequear. Separado del cuerpo
+   por su propio filete, porque salir de la página es otra cosa que seguir
+   leyéndola. */
+.fichaPie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-4);
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: var(--filete);
+}
+
+/* En hueso-tenue y no en violeta: el violeta es estructura —bordes,
+   barras, marcadores— y no se usa para texto corrido. */
+.fichaFuente,
+.fichaEnlace {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--hueso-tenue);
+}
+
+/* Subrayado en violeta y naranja al pasar, como todos los enlaces de la
+   página: se hereda del global y sólo se corrige el color de base. */
+.fichaEnlace {
+  color: var(--hueso);
+  text-decoration-line: underline;
+  transition: color 240ms var(--salida);
+}
+
+.fichaEnlace:hover {
+  color: var(--naranja);
+}
+
+/* ---------------- Cortes ---------------- */
+
+/* Abajo de 1100 la columna de la izquierda ya no le deja ancho útil a la
+   ficha: se apila, la línea deja de pegarse y el recorrido se apaga. Las
+   fichas quedan todas encendidas y una abajo de la otra, que es como se
+   lee una lista cuando no hay lugar para una escena. El registro sigue
+   arriba de todo, porque los nueve años de un vistazo valen igual acá. */
+@media (max-width: 1100px) {
+  .escena {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .quieto {
+    position: static;
+    min-height: 0;
+    padding: 0;
+    gap: var(--s-4);
+  }
+
+  .bloqueFicha {
+    min-height: 0;
+    padding: 0;
+    opacity: 1;
+  }
+
+  .ladoFichas {
+    gap: var(--s-4);
+  }
+
+  .ficha {
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hitos {
+    --canaleta: 38px;
+    --claro: var(--s-2);
+  }
+
+  .ficha {
+    padding: var(--s-4);
+  }
+
+  .bytes {
+    max-width: none;
+  }
+}
+
+/* Sin movimiento la línea está trazada, los nodos puestos y las fichas
+   enteras: es la misma frase, dicha quieta. El campo de bytes de la cola
+   no arranca nunca —eso lo resuelve su propio componente— así que lo sin
+   asignar se lee como una grilla de hexa detenida. */
+@media (prefers-reduced-motion: reduce) {
+  .carril::before,
+  .carril::after {
+    transform: none !important;
+    transition: none;
+  }
+
+  .bloqueFicha {
+    opacity: 1;
+  }
+}
